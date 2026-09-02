@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { navLinks, siteConfig } from "@/lib/data";
 
 const footerNav = [
@@ -16,6 +16,71 @@ const social = [
   { label: "GitHub", href: siteConfig.social.github },
 ];
 
+type NetworkInformation = {
+  saveData?: boolean;
+  effectiveType?: string;
+};
+
+function DeferredFooterVideo() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [isNearFooter, setIsNearFooter] = useState(false);
+
+  useEffect(() => {
+    if (shouldReduceMotion || !containerRef.current) return;
+
+    const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+    if (
+      connection?.saveData ||
+      ["slow-2g", "2g"].includes(connection?.effectiveType ?? "")
+    ) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsNearFooter(entry.isIntersecting);
+        if (entry.isIntersecting) setShouldLoad(true);
+      },
+      { rootMargin: "300px 0px", threshold: 0.01 }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [shouldReduceMotion]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !shouldLoad) return;
+
+    if (isNearFooter) {
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [isNearFooter, shouldLoad]);
+
+  return (
+    <div ref={containerRef} className="pointer-events-none absolute inset-0" aria-hidden="true">
+      {shouldLoad && (
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="none"
+          disablePictureInPicture
+          className="h-full w-full object-cover opacity-20"
+        >
+          <source src="/httpier.mp4" type="video/mp4" />
+        </video>
+      )}
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,18,32,0.94),rgba(11,18,32,0.68),rgba(11,18,32,0.9))]" />
+    </div>
+  );
+}
+
 export function Footer() {
   const { scrollYProgress } = useScroll();
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -26,6 +91,7 @@ export function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-[var(--color-navy)] text-white">
+      <DeferredFooterVideo />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_75%_0%,rgba(37,99,235,0.28),transparent_55%)]"
