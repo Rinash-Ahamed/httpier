@@ -10,6 +10,7 @@ type FormState = {
   email: string;
   goal: string;
   projectType: string;
+  budget: number;
   timeline: string;
   details: string;
 };
@@ -20,9 +21,21 @@ const initialState: FormState = {
   email: "",
   goal: "",
   projectType: "",
+  budget: 0,
   timeline: "",
   details: "",
 };
+
+const budgetOptions = [
+  "Under ₹10,000",
+  "₹10,000 - ₹25,000",
+  "₹25,000 - ₹50,000",
+  "₹50,000 - ₹1 lakh",
+  "₹1 lakh - ₹2 lakh",
+  "₹2 lakh - ₹5 lakh",
+  "₹5 lakh - ₹10 lakh",
+  "₹10 lakh+",
+] as const;
 
 function PillGroup({
   label,
@@ -91,8 +104,16 @@ export function ContactForm() {
     if (!validate()) return;
     setStatus("loading");
     try {
-      // Placeholder submission - wire up to a real endpoint (email, CRM, etc).
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          budget: budgetOptions[form.budget],
+        }),
+      });
+
+      if (!response.ok) throw new Error("Contact request failed.");
       setStatus("success");
     } catch {
       setStatus("error");
@@ -215,6 +236,36 @@ export function ContactForm() {
         {errors.projectType && (
           <p className="mt-1.5 text-[13px] text-red-600">{errors.projectType}</p>
         )}
+      </div>
+
+      <div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <label htmlFor="budget" className="text-[14px] font-medium text-[var(--color-ink)]">
+            Estimated budget
+          </label>
+          <output
+            htmlFor="budget"
+            className="rounded-full bg-[var(--color-mist)] px-3.5 py-1.5 text-[13px] font-medium text-[var(--color-blue)]"
+          >
+            {budgetOptions[form.budget]}
+          </output>
+        </div>
+        <input
+          id="budget"
+          type="range"
+          min={0}
+          max={budgetOptions.length - 1}
+          step={1}
+          value={form.budget}
+          aria-valuetext={budgetOptions[form.budget]}
+          onChange={(event) => update("budget", Number(event.target.value))}
+          className="mt-5 w-full cursor-pointer accent-[var(--color-blue)]"
+        />
+        <div className="mt-2 flex justify-between font-mono-tight text-[11px] text-[var(--color-ink-soft)]/60">
+          <span>&lt; ₹10k</span>
+          <span>₹1 lakh</span>
+          <span>₹10 lakh+</span>
+        </div>
       </div>
 
       <PillGroup

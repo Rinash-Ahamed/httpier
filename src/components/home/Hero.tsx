@@ -17,13 +17,17 @@ export function Hero() {
             </span>
           </Reveal>
 
-          <Reveal delay={0.08}>
-            <h1 className="mt-6 text-[13vw] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--color-ink)] sm:text-6xl lg:text-[4.5rem]">
-              We build
-              <br />
-              <span className="text-gradient">the better web.</span>
-            </h1>
-          </Reveal>
+          <h1 className="mt-6 text-[13vw] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--color-ink)] sm:text-6xl lg:text-[4.5rem]">
+            <span className="line-mask">
+              <span className="hero-line hero-line-first">We build</span>
+            </span>
+            <br />
+            <span className="line-mask">
+              <span className="hero-line hero-line-second text-gradient">
+                the better web.
+              </span>
+            </span>
+          </h1>
 
           <Reveal delay={0.16}>
             <p className="mt-6 max-w-md text-[17px] leading-relaxed text-[var(--color-ink-soft)]">

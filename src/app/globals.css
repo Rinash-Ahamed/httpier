@@ -76,6 +76,22 @@
   50% { transform: translateY(-10px); }
 }
 
+@keyframes line-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(115%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -119,10 +135,40 @@ body {
 /* ------------------------------------------------------------------ */
 
 .text-gradient {
-  background-image: var(--gradient-brand);
+  background-image: linear-gradient(
+    120deg,
+    var(--color-indigo),
+    var(--color-cyan),
+    #ec4899,
+    var(--color-indigo)
+  );
+  background-size: 300% 300%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+  animation: gradient-shift 6s ease infinite;
+}
+
+.line-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.hero-line {
+  display: inline-block;
+  opacity: 0;
+  animation: line-reveal 0.9s var(--ease-out-expo) forwards;
+}
+
+.hero-line-first {
+  animation-delay: 0.08s;
+}
+
+.hero-line-second.text-gradient {
+  animation:
+    line-reveal 0.9s var(--ease-out-expo) 0.28s forwards,
+    gradient-shift 6s ease infinite;
 }
 
 .bg-grid {
