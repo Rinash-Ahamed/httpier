@@ -4,7 +4,6 @@ import { useRef } from "react";
 import {
   motion,
   useMotionValue,
-  useScroll,
   useSpring,
   useTransform,
   useReducedMotion,
@@ -24,17 +23,6 @@ export function HeroVisual() {
     stiffness: 150,
     damping: 20,
   });
-
-  const { scrollY } = useScroll();
-  const layerBack = useSpring(useTransform(scrollY, [0, 700], [0, shouldReduceMotion ? 0 : -40]), {
-    stiffness: 100,
-    damping: 30,
-  });
-  const layerFront = useSpring(useTransform(scrollY, [0, 700], [0, shouldReduceMotion ? 0 : 70]), {
-    stiffness: 100,
-    damping: 30,
-  });
-  const fade = useTransform(scrollY, [0, 500], [1, 0.4]);
 
   function handlePointerMove(e: React.PointerEvent<HTMLDivElement>) {
     if (shouldReduceMotion || e.pointerType !== "mouse" || !ref.current) return;
@@ -56,29 +44,6 @@ export function HeroVisual() {
       style={{ perspective: 1400 }}
       className="relative mx-auto aspect-[4/3.4] w-full max-w-[560px]"
     >
-      {/* ambient floating cards behind the browser */}
-      <motion.div
-        style={{ y: layerBack, opacity: fade }}
-        className="absolute -left-4 top-6 hidden rounded-2xl border border-[var(--color-line)] bg-white/90 p-3 shadow-[var(--shadow-soft)] backdrop-blur sm:block"
-      >
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-[var(--color-cyan)]" />
-          <span className="font-mono-tight text-[11px] text-[var(--color-ink-soft)]">
-            build passing
-          </span>
-        </div>
-      </motion.div>
-
-      <motion.div
-        style={{ y: layerFront, opacity: fade }}
-        className="absolute -right-6 bottom-10 hidden rounded-2xl border border-[var(--color-line)] bg-white/90 p-3 shadow-[var(--shadow-soft)] backdrop-blur sm:block"
-      >
-        <div className="flex items-center gap-2 font-mono-tight text-[11px] text-[var(--color-ink-soft)]">
-          <span className="text-[var(--color-blue)]">98</span>
-          Lighthouse
-        </div>
-      </motion.div>
-
       {/* the browser canvas itself */}
       <motion.div
         style={{

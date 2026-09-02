@@ -1,11 +1,14 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { whyPrinciples } from "@/lib/data";
 import { Reveal, RevealGroup, revealItem } from "@/components/ui/Reveal";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 
 export function WhyHttpier() {
+  const [openCard, setOpenCard] = useState<string | null>(null);
+
   return (
     <section className="border-t border-[var(--color-line)] py-24 sm:py-32">
       <div className="container-httpier">
@@ -29,14 +32,26 @@ export function WhyHttpier() {
             const numeric = leadingDigits ? Number.parseInt(leadingDigits, 10) : 0;
             const suffix = leadingDigits ? item.metric.slice(leadingDigits.length) : "";
             return (
-              <motion.div
+              <motion.button
+                type="button"
                 key={item.label}
                 variants={revealItem}
-                className="rounded-2xl border border-[var(--color-line)] p-7"
+                aria-expanded={openCard === item.label}
+                aria-controls={`why-${item.label.toLowerCase()}`}
+                onClick={() => setOpenCard((current) => current === item.label ? null : item.label)}
+                className="group rounded-2xl border border-[var(--color-line)] p-7 text-left transition-colors hover:border-[var(--color-blue)]/30 hover:bg-[var(--color-mist)]/60"
               >
-                <h3 className="text-lg font-medium tracking-tight text-[var(--color-ink)]">
-                  {item.label}
-                </h3>
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-lg font-medium tracking-tight text-[var(--color-ink)]">
+                    {item.label}
+                  </h3>
+                  <span
+                    aria-hidden="true"
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[var(--color-line)] text-[17px] font-light text-[var(--color-blue)] transition-transform ${openCard === item.label ? "rotate-45" : ""}`}
+                  >
+                    +
+                  </span>
+                </div>
                 <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--color-ink-soft)]">
                   {item.detail}
                 </p>
@@ -52,7 +67,23 @@ export function WhyHttpier() {
                     {item.metricLabel}
                   </span>
                 </div>
-              </motion.div>
+                <AnimatePresence initial={false}>
+                  {openCard === item.label && (
+                    <motion.div
+                      id={`why-${item.label.toLowerCase()}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mt-5 border-t border-[var(--color-line)] pt-5 text-[14px] leading-relaxed text-[var(--color-ink-soft)]">
+                        {item.more}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
             );
           })}
         </RevealGroup>

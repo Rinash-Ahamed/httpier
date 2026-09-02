@@ -83,8 +83,8 @@ export function DevExperience() {
             <Reveal key={stage.label} delay={i * 0.05}>
               <motion.div className="grid overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] md:grid-cols-2">
                 <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
-                  <span className="font-mono-tight text-[12px] text-[var(--color-cyan)]">
-                    {String(i + 1).padStart(2, "0")} - {stage.label}
+                  <span className="font-mono-tight text-[12px] uppercase tracking-wider text-[var(--color-cyan)]">
+                    {stage.label}
                   </span>
                   <pre className="font-mono-tight text-[12.5px] leading-[1.7] text-white/80">
                     {stage.code}

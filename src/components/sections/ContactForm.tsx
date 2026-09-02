@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { projectTypes, budgetRanges, timelines } from "@/lib/data";
+import { projectTypes, timelines } from "@/lib/data";
 
 type FormState = {
   name: string;
@@ -10,7 +10,6 @@ type FormState = {
   email: string;
   goal: string;
   projectType: string;
-  budget: string;
   timeline: string;
   details: string;
 };
@@ -21,7 +20,6 @@ const initialState: FormState = {
   email: "",
   goal: "",
   projectType: "",
-  budget: "",
   timeline: "",
   details: "",
 };
@@ -218,13 +216,6 @@ export function ContactForm() {
           <p className="mt-1.5 text-[13px] text-red-600">{errors.projectType}</p>
         )}
       </div>
-
-      <PillGroup
-        label="Approximate budget"
-        options={budgetRanges}
-        value={form.budget}
-        onChange={(v) => update("budget", v)}
-      />
 
       <PillGroup
         label="Timeline"

@@ -53,23 +53,23 @@ export default function AboutPage() {
               Founder
             </p>
             <h2 className="mt-4 text-4xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-5xl">
-              Rinash Ahamed
+              Curiosity became HTTPier.
             </h2>
             <p className="mt-3 text-[15px] font-medium text-[var(--color-ink-soft)]">
-              Founder &amp; Developer
+              Rinash Ahamed, Founder &amp; Developer
             </p>
           </Reveal>
 
           <Reveal delay={0.08}>
             <p className="text-xl leading-relaxed text-[var(--color-ink)] sm:text-2xl">
-              Rinash founded HTTPier with a focus on building digital products
-              that are thoughtful, fast and genuinely useful.
+              HTTPier started with a simple curiosity: how can technology make
+              an idea easier to use, easier to trust and easier to grow?
             </p>
             <p className="mt-5 text-lg leading-relaxed text-[var(--color-ink-soft)]">
-              He is passionate about combining modern web technologies with
-              practical AI to solve real business challenges, simplify
-              customer journeys and create experiences that help brands serve
-              people better.
+              Rinash explores that question through every project, combining
+              modern web development with practical AI where it genuinely
+              helps. The goal is simple: less friction for the business and a
+              better experience for the customer.
             </p>
           </Reveal>
         </div>

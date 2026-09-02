@@ -17,9 +17,21 @@ const frame = (
 );
 
 const devices = [
-  { label: "Desktop", width: "100%", height: 150 },
-  { label: "Tablet", width: "62%", height: 170 },
-  { label: "Mobile", width: "30%", height: 190 },
+  {
+    label: "Desktop",
+    width: "w-full max-w-[520px] sm:w-[48%]",
+    aspect: "aspect-[16/10]",
+  },
+  {
+    label: "Tablet",
+    width: "w-[72%] max-w-[280px] sm:w-[28%]",
+    aspect: "aspect-[3/4]",
+  },
+  {
+    label: "Mobile",
+    width: "w-[44%] max-w-[170px] sm:w-[17%]",
+    aspect: "aspect-[9/16]",
+  },
 ];
 
 export function ResponsiveShowcase() {
@@ -45,7 +57,7 @@ export function ResponsiveShowcase() {
           </Reveal>
         </div>
 
-        <div className="mt-16 flex flex-col items-center gap-8 sm:flex-row sm:items-end sm:justify-center">
+        <div className="mt-16 flex flex-col items-center gap-8 sm:flex-row sm:items-end sm:justify-center sm:gap-4 lg:gap-8">
           {devices.map((device, i) => (
             <motion.div
               key={device.label}
@@ -53,12 +65,10 @@ export function ResponsiveShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-center gap-3"
-              style={{ width: device.width, maxWidth: 360 }}
+              className={`flex shrink-0 flex-col items-center gap-3 ${device.width}`}
             >
               <div
-                className="w-full overflow-hidden rounded-xl border border-[var(--color-line)] bg-white shadow-[var(--shadow-soft)]"
-                style={{ height: device.height }}
+                className={`w-full overflow-hidden rounded-xl border border-[var(--color-line)] bg-white shadow-[var(--shadow-soft)] ${device.aspect}`}
               >
                 {frame}
                 <div className="mx-3 h-px bg-[var(--color-line)]" />

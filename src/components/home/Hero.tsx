@@ -13,7 +13,7 @@ export function Hero() {
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/80 px-3.5 py-1.5 font-mono-tight text-[12px] text-[var(--color-ink-soft)] backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
-              Now booking Q1 2026 projects
+              Modern technology. Meaningful outcomes.
             </span>
           </Reveal>
 

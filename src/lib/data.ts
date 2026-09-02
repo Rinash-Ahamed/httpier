@@ -94,8 +94,8 @@ export type Project = {
   services: string[];
   result: string;
   year: string;
-  layout: "browser" | "mobile" | "dashboard" | "split";
-  accent: string;
+  image: string;
+  imageAlt: string;
   summary: string;
 };
 
@@ -108,8 +108,8 @@ export const projects: Project[] = [
     services: ["Website Development", "UI/UX Design"],
     result: "Live production website",
     year: "Live",
-    layout: "dashboard",
-    accent: "from-emerald-500 to-teal-400",
+    image: "/work/profitpro.png",
+    imageAlt: "ProfitPro hotel revenue platform homepage",
     summary:
       "A conversion-focused platform for hotel revenue management, dynamic pricing and OTA onboarding across multiple booking channels.",
   },
@@ -121,8 +121,8 @@ export const projects: Project[] = [
     services: ["UI/UX Design", "Website Development"],
     result: "Live production website",
     year: "Live",
-    layout: "mobile",
-    accent: "from-green-600 to-lime-400",
+    image: "/work/ayursarga.png",
+    imageAlt: "Ayursarga Ayurvedic healthcare platform homepage",
     summary:
       "A healthcare discovery platform that helps people explore Ayurvedic hospitals in Kerala, compare services and request appointments.",
   },
@@ -134,8 +134,8 @@ export const projects: Project[] = [
     services: ["E-commerce", "Website Development"],
     result: "Live production website",
     year: "Live",
-    layout: "split",
-    accent: "from-fuchsia-500 to-rose-400",
+    image: "/work/amigos-fashion.png",
+    imageAlt: "AMIGOS Fashion storefront homepage",
     summary:
       "A responsive fashion storefront featuring curated collections for men, women and kids with a streamlined product-discovery experience.",
   },
@@ -147,8 +147,8 @@ export const projects: Project[] = [
     services: ["Website Development", "UI/UX Design"],
     result: "Live production website",
     year: "Live",
-    layout: "browser",
-    accent: "from-amber-500 to-orange-400",
+    image: "/work/space-d-infra.png",
+    imageAlt: "Space-D Infra Developers homepage",
     summary:
       "A polished corporate website presenting premium residential and commercial developments through a clear, project-led experience.",
   },
@@ -198,12 +198,48 @@ export const techStack = [
 ];
 
 export const whyPrinciples = [
-  { label: "Speed", detail: "Fast loading experiences.", metric: "< 1.5s", metricLabel: "avg. LCP" },
-  { label: "Responsive", detail: "Exceptional experiences across every screen.", metric: "5", metricLabel: "breakpoints tuned" },
-  { label: "SEO", detail: "Built to be discoverable.", metric: "95+", metricLabel: "SEO score" },
-  { label: "Scalable", detail: "Architecture that grows with the business.", metric: "0→1M", metricLabel: "users, same base" },
-  { label: "Accessible", detail: "Designed for everyone.", metric: "WCAG AA", metricLabel: "standard" },
-  { label: "Maintainable", detail: "Clean engineering that remains manageable.", metric: "100%", metricLabel: "typed codebase" },
+  {
+    label: "Speed",
+    detail: "Fast loading experiences.",
+    more: "Lean code, optimized assets and thoughtful rendering keep every interaction quick from the first visit onward.",
+    metric: "< 1.5s",
+    metricLabel: "avg. LCP",
+  },
+  {
+    label: "Responsive",
+    detail: "Exceptional experiences across every screen.",
+    more: "Layouts are deliberately tuned for phones, tablets, laptops and wide displays instead of simply being scaled down.",
+    metric: "5",
+    metricLabel: "breakpoints tuned",
+  },
+  {
+    label: "SEO",
+    detail: "Built to be discoverable.",
+    more: "Semantic structure, useful metadata and strong technical foundations help search engines understand every page.",
+    metric: "95+",
+    metricLabel: "SEO score",
+  },
+  {
+    label: "Scalable",
+    detail: "Architecture that grows with the business.",
+    more: "Reusable components and well-defined systems make it easier to add features, pages and users without rebuilding the foundation.",
+    metric: "0→1M",
+    metricLabel: "users, same base",
+  },
+  {
+    label: "Accessible",
+    detail: "Designed for everyone.",
+    more: "Clear contrast, keyboard support, visible focus states and semantic markup make the experience usable by more people.",
+    metric: "WCAG AA",
+    metricLabel: "standard",
+  },
+  {
+    label: "Maintainable",
+    detail: "Clean engineering that remains manageable.",
+    more: "A clear structure and typed codebase make future changes safer, faster and easier for any developer to understand.",
+    metric: "100%",
+    metricLabel: "typed codebase",
+  },
 ];
 
 export const performanceStats = [
@@ -220,14 +256,6 @@ export const projectTypes = [
   "E-commerce",
   "Redesign",
   "Other",
-] as const;
-
-export const budgetRanges = [
-  "Under ₹8 lakh",
-  "₹8 lakh - ₹20 lakh",
-  "₹20 lakh - ₹50 lakh",
-  "₹50 lakh+",
-  "Not sure yet",
 ] as const;
 
 export const timelines = [
