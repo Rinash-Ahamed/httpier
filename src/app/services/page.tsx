@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { services } from "@/lib/data";
+import { createPageMetadata, serializeJsonLd } from "@/lib/seo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { CTASection } from "@/components/home/CTASection";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Services",
   description:
     "Website development, web applications, SaaS, e-commerce, UI/UX design and performance optimization from HTTPier.",
-};
+  path: "/services",
+});
 
 const servicesJsonLd = {
   "@context": "https://schema.org",
@@ -28,7 +29,7 @@ export default function ServicesPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(servicesJsonLd) }}
       />
       <PageHero
         eyebrow="Services"

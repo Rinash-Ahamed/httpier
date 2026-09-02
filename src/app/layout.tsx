@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { siteConfig } from "@/lib/data";
+import { serializeJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -65,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd) }}
         />
       </head>
       <body className="min-h-full flex flex-col">

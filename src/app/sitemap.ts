@@ -1,14 +1,15 @@
 import type { MetadataRoute } from "next";
-import { projects, siteConfig } from "@/lib/data";
+import { projects } from "@/lib/data";
+import { absoluteUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/services", "/work", "/about", "/contact"].map((path) => ({
-    url: `${siteConfig.url}${path}`,
+  const staticRoutes = ["", "/services", "/work", "/about", "/contact", "/privacy", "/terms"].map((path) => ({
+    url: absoluteUrl(path),
     lastModified: new Date(),
   }));
 
   const projectRoutes = projects.map((project) => ({
-    url: `${siteConfig.url}/work/${project.slug}`,
+    url: absoluteUrl(`/work/${project.slug}`),
     lastModified: new Date(),
   }));
 

@@ -16,7 +16,7 @@ export function AnimatedNumber({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
-  const motionValue = useMotionValue(0);
+  const motionValue = useMotionValue(value);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -25,6 +25,7 @@ export function AnimatedNumber({
       if (ref.current) ref.current.textContent = `${value}${suffix}`;
       return;
     }
+    motionValue.set(0);
     const controls = animate(motionValue, value, {
       duration,
       ease: [0.16, 1, 0.3, 1],
@@ -37,7 +38,7 @@ export function AnimatedNumber({
 
   return (
     <span ref={ref} className={className}>
-      0{suffix}
+      {value}{suffix}
     </span>
   );
 }

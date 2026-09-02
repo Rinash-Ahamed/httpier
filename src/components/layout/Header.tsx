@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { navLinks } from "@/lib/data";
 import { Button } from "@/components/ui/Button";
@@ -23,6 +23,16 @@ export function Header() {
     };
   }, [menuOpen]);
 
+  function handleNavClick(event: MouseEvent<HTMLAnchorElement>, href: string) {
+    setMenuOpen(false);
+
+    if (href === "/" && window.location.pathname === "/") {
+      event.preventDefault();
+      window.history.replaceState(null, "", "/");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="container-httpier">
@@ -39,7 +49,12 @@ export function Header() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="flex items-center justify-between rounded-full border py-2.5 backdrop-blur-xl"
         >
-          <Link href="/" className="flex items-center gap-2 rounded-full px-2 py-1" data-cursor="">
+          <Link
+            href="/"
+            onClick={(event) => handleNavClick(event, "/")}
+            className="flex items-center gap-2 rounded-full px-2 py-1"
+            data-cursor=""
+          >
             <Image
               src="/brand/httpier-mark.png"
               alt=""
@@ -58,6 +73,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={(event) => handleNavClick(event, link.href)}
                 className="group relative rounded-full px-4 py-2 text-[14px] font-medium text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
               >
                 {link.label}
@@ -127,7 +143,7 @@ export function Header() {
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(event) => handleNavClick(event, link.href)}
                     className="flex items-baseline gap-4 text-4xl font-medium tracking-tight text-[var(--color-ink)]"
                   >
                     <span className="font-mono-tight text-sm text-[var(--color-blue)]">

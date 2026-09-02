@@ -2,13 +2,21 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 
-function subscribeNoop() {
-  return () => {};
+function subscribeToPointerPreferences(callback: () => void) {
+  const pointer = window.matchMedia("(pointer: fine)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  pointer.addEventListener("change", callback);
+  reducedMotion.addEventListener("change", callback);
+
+  return () => {
+    pointer.removeEventListener("change", callback);
+    reducedMotion.removeEventListener("change", callback);
+  };
 }
 
 function useFinePointerNoReducedMotion() {
   return useSyncExternalStore(
-    subscribeNoop,
+    subscribeToPointerPreferences,
     () =>
       window.matchMedia("(pointer: fine)").matches &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -39,7 +47,7 @@ export function CustomCursor() {
     function handleMove(e: PointerEvent) {
       x.set(e.clientX);
       y.set(e.clientY);
-      if (!visible) setVisible(true);
+      setVisible(true);
       const target = (e.target as HTMLElement)?.closest("[data-cursor]") as HTMLElement | null;
       setLabel(target?.dataset.cursor ?? null);
     }
@@ -53,8 +61,7 @@ export function CustomCursor() {
       window.removeEventListener("pointermove", handleMove);
       document.documentElement.removeEventListener("mouseleave", handleLeave);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, visible]);
+  }, [enabled, x, y]);
 
   if (!enabled) return null;
 

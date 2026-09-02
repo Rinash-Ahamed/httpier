@@ -6,6 +6,7 @@ import { Mockup } from "@/components/sections/WorkCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { CTASection } from "@/components/home/CTASection";
+import { createPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -19,10 +20,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
-  return {
+  return createPageMetadata({
     title: project.name,
     description: project.summary,
-  };
+    path: `/work/${project.slug}`,
+  });
 }
 
 export default async function CaseStudyPage({

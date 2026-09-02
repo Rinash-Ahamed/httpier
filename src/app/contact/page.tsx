@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Contact",
   description: "Tell us what you want to build - HTTPier responds within one business day.",
-};
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

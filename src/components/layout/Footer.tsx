@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "motion/react";
-import { siteConfig } from "@/lib/data";
+import { useState } from "react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { navLinks, siteConfig } from "@/lib/data";
 
 const footerNav = [
-  { label: "Work", href: "/work" },
-  { label: "Services", href: "/services" },
-  { label: "About", href: "/about" },
+  ...navLinks,
   { label: "Contact", href: "/contact" },
 ];
 
@@ -19,7 +18,11 @@ const social = [
 
 export function Footer() {
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.05], [0, 1]);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setShowBackToTop(latest > 0.05);
+  });
 
   return (
     <footer className="relative overflow-hidden bg-[var(--color-navy)] text-white">
@@ -30,9 +33,11 @@ export function Footer() {
       <motion.button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        style={{ opacity }}
+        animate={{ opacity: showBackToTop ? 1 : 0 }}
+        tabIndex={showBackToTop ? 0 : -1}
+        aria-hidden={!showBackToTop}
         aria-label="Back to top"
-        className="absolute right-6 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 backdrop-blur transition-colors hover:border-white/30 hover:bg-white/15 hover:text-white sm:right-10"
+        className={`absolute right-6 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 backdrop-blur transition-colors hover:border-white/30 hover:bg-white/15 hover:text-white sm:right-10 ${showBackToTop ? "pointer-events-auto" : "pointer-events-none"}`}
       >
         <svg width="14" height="14" viewBox="0 0 15 15" fill="none" aria-hidden="true">
           <path

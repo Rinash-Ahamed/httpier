@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { projects } from "@/lib/data";
 import { RevealGroup } from "@/components/ui/Reveal";
 import { CTASection } from "@/components/home/CTASection";
 import { WorkCard } from "@/components/sections/WorkCard";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Work",
   description: "Selected HTTPier projects across hospitality, healthcare, e-commerce and real estate.",
-};
+  path: "/work",
+});
 
 export default function WorkPage() {
   return (

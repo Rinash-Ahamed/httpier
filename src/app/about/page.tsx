@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 import { CTASection } from "@/components/home/CTASection";
 import { PrinciplesGrid } from "@/components/sections/PrinciplesGrid";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "About",
   description:
     "HTTPier combines design, engineering and performance to build digital experiences people actually enjoy using.",
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

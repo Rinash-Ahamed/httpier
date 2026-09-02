@@ -1,7 +1,11 @@
-import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Privacy Policy" };
+export const metadata = createPageMetadata({
+  title: "Privacy Policy",
+  description: "How HTTPier handles information shared through this website.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

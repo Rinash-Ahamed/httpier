@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Better Web, By Design.",
   description:
     "HTTPier is a web engineering studio building high-performance websites, web applications, SaaS products and e-commerce experiences engineered for speed, clarity and growth.",
-  url: "https://www.httier.in",
+  url: "https://httpier.in",
   phone: "+919489813846",
   social: {
     linkedin: "https://linkedin.com/company/httpier",

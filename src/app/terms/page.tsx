@@ -1,7 +1,11 @@
-import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Terms of Service" };
+export const metadata = createPageMetadata({
+  title: "Terms of Service",
+  description: "Terms governing the use of the HTTPier website and services.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
