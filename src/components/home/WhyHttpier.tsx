@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { whyPrinciples } from "@/lib/data";
 import { Reveal, RevealGroup, revealItem } from "@/components/ui/Reveal";
-import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 
 export function WhyHttpier() {
   const [openCard, setOpenCard] = useState<string | null>(null);
@@ -27,10 +26,6 @@ export function WhyHttpier() {
 
         <RevealGroup className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {whyPrinciples.map((item) => {
-            const leadingDigits = item.metric.match(/^\d+/)?.[0];
-            const isNumeric = Boolean(leadingDigits);
-            const numeric = leadingDigits ? Number.parseInt(leadingDigits, 10) : 0;
-            const suffix = leadingDigits ? item.metric.slice(leadingDigits.length) : "";
             return (
               <motion.button
                 type="button"
@@ -57,11 +52,7 @@ export function WhyHttpier() {
                 </p>
                 <div className="mt-6 flex items-baseline gap-2 border-t border-[var(--color-line)] pt-5">
                   <span className="text-gradient text-2xl font-semibold tracking-tight">
-                    {isNumeric ? (
-                      <AnimatedNumber value={numeric} suffix={suffix} />
-                    ) : (
-                      item.metric
-                    )}
+                    {item.metric}
                   </span>
                   <span className="text-[12px] text-[var(--color-ink-soft)]/70">
                     {item.metricLabel}

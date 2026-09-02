@@ -96,12 +96,12 @@ export function Footer() {
               Contact
             </p>
             <div className="mt-4 space-y-3">
-              <a href={`mailto:${siteConfig.email}`} className="block text-[14px] text-white/65 transition-colors hover:text-white">
-                {siteConfig.email}
-              </a>
               <a href={`tel:${siteConfig.phone}`} className="block text-[14px] text-white/65 transition-colors hover:text-white">
                 +91 9489813846
               </a>
+              <Link href="/contact" className="block text-[14px] text-white/65 transition-colors hover:text-white">
+                Send a project enquiry
+              </Link>
             </div>
           </div>
 

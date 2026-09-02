@@ -3,8 +3,7 @@ export const siteConfig = {
   tagline: "Better Web, By Design.",
   description:
     "HTTPier is a web engineering studio building high-performance websites, web applications, SaaS products and e-commerce experiences engineered for speed, clarity and growth.",
-  url: "https://httpier.com",
-  email: "hello@httpier.com",
+  url: "https://www.httier.in",
   phone: "+919489813846",
   social: {
     linkedin: "https://linkedin.com/company/httpier",
@@ -17,6 +16,7 @@ export const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
+  { label: "Testimonials", href: "/#testimonials" },
   { label: "About", href: "/about" },
 ];
 
@@ -92,11 +92,14 @@ export type Project = {
   url: string;
   industry: string;
   services: string[];
-  result: string;
-  year: string;
   image: string;
   imageAlt: string;
   summary: string;
+  problem: string;
+  solution: string;
+  contribution: string;
+  tech: string[];
+  outcome: string;
 };
 
 export const projects: Project[] = [
@@ -106,12 +109,19 @@ export const projects: Project[] = [
     url: "https://www.profitproz.com",
     industry: "Hospitality SaaS",
     services: ["Website Development", "UI/UX Design"],
-    result: "Live production website",
-    year: "Live",
     image: "/work/profitpro.png",
     imageAlt: "ProfitPro hotel revenue platform homepage",
     summary:
       "A conversion-focused platform for hotel revenue management, dynamic pricing and OTA onboarding across multiple booking channels.",
+    problem:
+      "Hotel operators needed a clearer way to understand revenue management, dynamic pricing and OTA onboarding without navigating a complex sales process.",
+    solution:
+      "A focused digital experience that organizes ProfitPro's services around hotel needs and guides visitors toward the right next step.",
+    contribution:
+      "HTTPier designed and developed the responsive website, service architecture, conversion journeys and revenue-audit enquiry flow.",
+    tech: ["Next.js", "React", "Vercel"],
+    outcome:
+      "A credible, easier-to-navigate platform that turns a complex hospitality offering into a clear path from discovery to enquiry.",
   },
   {
     slug: "ayursarga",
@@ -119,12 +129,19 @@ export const projects: Project[] = [
     url: "https://www.ayursarga.com",
     industry: "Healthcare",
     services: ["UI/UX Design", "Website Development"],
-    result: "Live production website",
-    year: "Live",
     image: "/work/ayursarga.png",
     imageAlt: "Ayursarga Ayurvedic healthcare platform homepage",
     summary:
       "A healthcare discovery platform that helps people explore Ayurvedic hospitals in Kerala, compare services and request appointments.",
+    problem:
+      "People searching for Ayurvedic care needed a trustworthy way to discover active hospitals, understand available treatments and make contact with confidence.",
+    solution:
+      "A calm, guided healthcare platform built around hospital discovery, service comparison and appointment requests.",
+    contribution:
+      "HTTPier shaped the user experience and developed the responsive discovery journey, hospital presentation and appointment-request flow.",
+    tech: ["Next.js", "React", "Vercel"],
+    outcome:
+      "A more approachable route to Ayurvedic care that brings useful provider information and the next action into one consistent experience.",
   },
   {
     slug: "amigos-fashion",
@@ -132,12 +149,19 @@ export const projects: Project[] = [
     url: "https://www.amigosfashion.com",
     industry: "Fashion E-commerce",
     services: ["E-commerce", "Website Development"],
-    result: "Live production website",
-    year: "Live",
     image: "/work/amigos-fashion.png",
     imageAlt: "AMIGOS Fashion storefront homepage",
     summary:
       "A responsive fashion storefront featuring curated collections for men, women and kids with a streamlined product-discovery experience.",
+    problem:
+      "AMIGOS needed a distinctive digital presence that could express its fashion identity while making collections easy to discover across devices.",
+    solution:
+      "An editorial storefront that pairs confident art direction with a simple route into the brand's collections and story.",
+    contribution:
+      "HTTPier designed and developed the responsive storefront, collection navigation, visual system and interaction details.",
+    tech: ["Next.js", "React", "Vercel"],
+    outcome:
+      "A recognizable online identity that gives the collection room to lead while keeping exploration focused and intuitive.",
   },
   {
     slug: "space-d-infra",
@@ -145,12 +169,19 @@ export const projects: Project[] = [
     url: "https://www.spacedinfra.com",
     industry: "Real Estate",
     services: ["Website Development", "UI/UX Design"],
-    result: "Live production website",
-    year: "Live",
     image: "/work/space-d-infra.png",
     imageAlt: "Space-D Infra Developers homepage",
     summary:
       "A polished corporate website presenting premium residential and commercial developments through a clear, project-led experience.",
+    problem:
+      "Space-D Infra needed its residential and commercial work to feel as considered online as the spaces it designs and builds.",
+    solution:
+      "A project-led corporate experience that balances architectural imagery, company credibility and clear consultation paths.",
+    contribution:
+      "HTTPier created the responsive website, visual direction, project showcase and enquiry-focused navigation.",
+    tech: ["Next.js", "React", "Vercel"],
+    outcome:
+      "A stronger digital presence that presents the developer's work clearly and gives prospective clients a direct route to explore and enquire.",
   },
 ];
 

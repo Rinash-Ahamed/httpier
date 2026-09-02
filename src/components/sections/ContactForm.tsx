@@ -240,11 +240,7 @@ export function ContactForm() {
 
       {status === "error" && (
         <p className="text-[14px] text-red-600">
-          Something went wrong sending your message. Please try again or email{" "}
-          <a href="mailto:hello@httpier.com" className="underline">
-            hello@httpier.com
-          </a>
-          .
+          Something went wrong sending your message. Please try again.
         </p>
       )}
 

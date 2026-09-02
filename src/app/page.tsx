@@ -2,6 +2,7 @@ import { Hero } from "@/components/home/Hero";
 import { Intro } from "@/components/home/Intro";
 import { Services } from "@/components/home/Services";
 import { FeaturedWork } from "@/components/home/FeaturedWork";
+import { Testimonials } from "@/components/home/Testimonials";
 import { DevExperience } from "@/components/home/DevExperience";
 import { WhyHttpier } from "@/components/home/WhyHttpier";
 import { ResponsiveShowcase } from "@/components/home/ResponsiveShowcase";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Intro />
       <Services />
       <FeaturedWork />
+      <Testimonials />
       <DevExperience />
       <WhyHttpier />
       <ResponsiveShowcase />

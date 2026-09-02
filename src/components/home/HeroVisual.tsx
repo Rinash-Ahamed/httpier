@@ -60,7 +60,7 @@ export function HeroVisual() {
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
           <div className="ml-3 flex h-6 flex-1 items-center rounded-full bg-white px-3">
             <span className="font-mono-tight text-[10px] text-[var(--color-ink-soft)]/60">
-              httpier.com
+              httier.in
             </span>
           </div>
         </div>
