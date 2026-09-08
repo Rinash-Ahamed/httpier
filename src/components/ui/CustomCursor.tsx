@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 function subscribeToPointerPreferences(callback: () => void) {
   const pointer = window.matchMedia("(pointer: fine)");
@@ -35,6 +35,8 @@ export function CustomCursor() {
   const enabled = useFinePointerNoReducedMotion();
   const [label, setLabel] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
+  const labelRef = useRef<string | null>(null);
+  const visibleRef = useRef(false);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -47,11 +49,19 @@ export function CustomCursor() {
     function handleMove(e: PointerEvent) {
       x.set(e.clientX);
       y.set(e.clientY);
-      setVisible(true);
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setVisible(true);
+      }
       const target = (e.target as HTMLElement)?.closest("[data-cursor]") as HTMLElement | null;
-      setLabel(target?.dataset.cursor ?? null);
+      const nextLabel = target?.dataset.cursor ?? null;
+      if (nextLabel !== labelRef.current) {
+        labelRef.current = nextLabel;
+        setLabel(nextLabel);
+      }
     }
     function handleLeave() {
+      visibleRef.current = false;
       setVisible(false);
     }
 

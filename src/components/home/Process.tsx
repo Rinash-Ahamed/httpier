@@ -12,11 +12,13 @@ import { useRef, useState } from "react";
 import { processSteps } from "@/lib/data";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProcessArtwork, type ProcessTitle } from "@/components/home/ProcessArtwork";
+import { useViewportMotion } from "@/hooks/useViewportMotion";
 
 export function Process() {
   const ref = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const shouldReduceMotion = Boolean(useReducedMotion());
+  const shouldAnimate = useViewportMotion(ref);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start center", "end center"],
@@ -99,7 +101,7 @@ export function Process() {
                       <div className="mt-7 lg:hidden">
                         <ProcessArtwork
                           step={step.title as ProcessTitle}
-                          animate={isActive}
+                          animate={isActive && shouldAnimate}
                           idPrefix={`mobile-${step.index}`}
                         />
                       </div>
@@ -116,14 +118,15 @@ export function Process() {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={processSteps[activeStep].title}
-                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.965, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -18, scale: 0.98, filter: "blur(8px)" }}
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.965 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -18, scale: 0.98 }}
                   transition={{ duration: shouldReduceMotion ? 0.12 : 0.58, ease: [0.16, 1, 0.3, 1] }}
                   className="absolute inset-0"
                 >
                   <ProcessArtwork
                     step={processSteps[activeStep].title as ProcessTitle}
+                    animate={shouldAnimate}
                     idPrefix={`desktop-${processSteps[activeStep].index}`}
                   />
                 </motion.div>

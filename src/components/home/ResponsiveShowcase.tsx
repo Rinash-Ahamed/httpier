@@ -1,7 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useRef } from "react";
 import { Reveal } from "@/components/ui/Reveal";
+import { useViewportMotion } from "@/hooks/useViewportMotion";
 
 function BrowserBar({ compact = false }: { compact?: boolean }) {
   return (
@@ -66,11 +68,13 @@ function Device({
   className,
   label,
   delay,
+  active,
 }: {
   mode: "desktop" | "tablet" | "mobile";
   className: string;
   label: string;
   delay: number;
+  active: boolean;
 }) {
   const shouldReduceMotion = Boolean(useReducedMotion());
   const radius = mode === "mobile" ? "rounded-[1.4rem]" : "rounded-2xl";
@@ -85,12 +89,12 @@ function Device({
       className={className}
     >
       <motion.div
-        animate={shouldReduceMotion ? undefined : { y: [-4, 4, -4], rotateY: mode === "desktop" ? [-1, 1, -1] : [1.5, -1.5, 1.5] }}
+        animate={active ? { y: [-4, 4, -4], rotateY: mode === "desktop" ? [-1, 1, -1] : [1.5, -1.5, 1.5] } : { y: 0, rotateY: 0 }}
         transition={{ duration: 7 + delay * 3, repeat: Infinity, ease: "easeInOut" }}
         className={`${radius} ${aspect} border border-white/15 bg-[#111d31] p-1.5 shadow-[0_28px_70px_-24px_rgba(6,182,212,0.42)] [backface-visibility:hidden] [transform-style:preserve-3d] [will-change:transform]`}
       >
         <div className={`${radius} h-full overflow-hidden`}>
-          <AdaptiveInterface mode={mode} animate={!shouldReduceMotion} />
+          <AdaptiveInterface mode={mode} animate={active} />
         </div>
       </motion.div>
       <div className="mt-3 flex items-center justify-between font-mono-tight text-[10px] uppercase tracking-[0.14em] text-white/45">
@@ -102,14 +106,15 @@ function Device({
 }
 
 export function ResponsiveShowcase() {
-  const shouldReduceMotion = Boolean(useReducedMotion());
+  const sectionRef = useRef<HTMLElement>(null);
+  const shouldAnimate = useViewportMotion(sectionRef);
 
   return (
-    <section className="relative overflow-hidden border-t border-white/10 bg-[var(--color-navy)] py-24 text-white sm:py-32">
+    <section ref={sectionRef} className="relative overflow-hidden border-t border-white/10 bg-[var(--color-navy)] py-24 text-white sm:py-32">
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute -left-32 top-20 h-80 w-80 rounded-full bg-[var(--color-blue)]/15 blur-3xl"
-        animate={shouldReduceMotion ? undefined : { x: [0, 220, 0], y: [0, 90, 0] }}
+        animate={shouldAnimate ? { x: [0, 220, 0], y: [0, 90, 0] } : { x: 0, y: 0 }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
       <div className="container-httpier relative">
@@ -145,18 +150,21 @@ export function ResponsiveShowcase() {
             mode="desktop"
             label="Wide canvas"
             delay={0}
+            active={shouldAnimate}
             className="relative z-10 col-span-2 sm:absolute sm:left-[3%] sm:top-[8%] sm:w-[68%]"
           />
           <Device
             mode="tablet"
             label="Touch layout"
             delay={0.12}
+            active={shouldAnimate}
             className="relative z-20 sm:absolute sm:right-[4%] sm:top-[17%] sm:w-[27%]"
           />
           <Device
             mode="mobile"
             label="Pocket flow"
             delay={0.24}
+            active={shouldAnimate}
             className="relative z-30 sm:absolute sm:bottom-[5%] sm:right-[35%] sm:w-[15%]"
           />
 

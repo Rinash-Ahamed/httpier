@@ -1,7 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
+import { useRef } from "react";
 import { Reveal } from "@/components/ui/Reveal";
+import { useViewportMotion } from "@/hooks/useViewportMotion";
 
 const stages = [
   {
@@ -115,11 +117,15 @@ function CodeVisual({ reduced }: { reduced: boolean }) {
           <div className="space-y-2 py-2">
             <div className="h-2 w-4/5 rounded-full bg-[var(--color-ink)]/15" />
             <div className="h-2 w-3/5 rounded-full bg-[var(--color-ink)]/10" />
-            <motion.div
-              className="mt-3 h-6 w-20 rounded-full bg-[linear-gradient(90deg,var(--color-blue),var(--color-cyan))]"
-              animate={reduced ? undefined : { boxShadow: ["0 0 0 rgba(6,182,212,0)", "0 0 22px rgba(6,182,212,0.5)", "0 0 0 rgba(6,182,212,0)"] }}
-              transition={{ duration: 2.6, repeat: Infinity }}
-            />
+            <div className="relative mt-3 h-6 w-20">
+              <motion.div
+                aria-hidden="true"
+                className="absolute -inset-2 rounded-full bg-[var(--color-cyan)]/40 blur-md"
+                animate={reduced ? { opacity: 0 } : { opacity: [0, 0.75, 0], scale: [0.82, 1.08, 0.82] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="relative h-full w-full rounded-full bg-[linear-gradient(90deg,var(--color-blue),var(--color-cyan))]" />
+            </div>
           </div>
         </motion.div>
       </div>
@@ -174,10 +180,11 @@ function StageVisual({ stage, reduced }: { stage: (typeof stages)[number]["label
 }
 
 export function DevExperience() {
-  const shouldReduceMotion = Boolean(useReducedMotion());
+  const sectionRef = useRef<HTMLElement>(null);
+  const shouldAnimate = useViewportMotion(sectionRef);
 
   return (
-    <section className="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-24 text-white sm:py-32">
+    <section ref={sectionRef} className="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-24 text-white sm:py-32">
       <div className="container-httpier">
         <div className="max-w-xl">
           <Reveal>
@@ -196,7 +203,7 @@ export function DevExperience() {
           {stages.map((stage, index) => (
             <Reveal key={stage.label} delay={index * 0.05}>
               <motion.div
-                whileHover={shouldReduceMotion ? undefined : { y: -3, borderColor: "rgba(255,255,255,0.2)" }}
+                whileHover={shouldAnimate ? { y: -3, borderColor: "rgba(255,255,255,0.2)" } : undefined}
                 transition={{ duration: 0.25 }}
                 className="grid overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] md:grid-cols-2"
               >
@@ -209,7 +216,7 @@ export function DevExperience() {
                   </pre>
                 </div>
                 <div className="flex min-h-56 items-center overflow-hidden border-t border-white/10 bg-white/[0.02] p-6 md:border-l md:border-t-0">
-                  <StageVisual stage={stage.label} reduced={shouldReduceMotion} />
+                  <StageVisual stage={stage.label} reduced={!shouldAnimate} />
                 </div>
               </motion.div>
             </Reveal>

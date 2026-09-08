@@ -1,8 +1,10 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
+import { useRef } from "react";
 import { techStack } from "@/lib/data";
 import { Reveal, RevealGroup } from "@/components/ui/Reveal";
+import { useViewportMotion } from "@/hooks/useViewportMotion";
 
 const techItem: Variants = {
   hidden: { opacity: 0, y: 18, scale: 0.94 },
@@ -15,10 +17,11 @@ const techItem: Variants = {
 };
 
 export function TechStack() {
-  const shouldReduceMotion = Boolean(useReducedMotion());
+  const sectionRef = useRef<HTMLElement>(null);
+  const shouldAnimate = useViewportMotion(sectionRef);
 
   return (
-    <section className="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-24 text-white sm:py-32">
+    <section ref={sectionRef} className="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-24 text-white sm:py-32">
       <div className="container-httpier">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div>
@@ -50,7 +53,7 @@ export function TechStack() {
             <motion.div
               aria-hidden="true"
               className="pointer-events-none absolute -left-16 top-1/4 h-48 w-48 rounded-full bg-[var(--color-blue)]/15 blur-3xl"
-              animate={shouldReduceMotion ? undefined : { x: [0, 280, 0], y: [0, 180, 0] }}
+              animate={shouldAnimate ? { x: [0, 280, 0], y: [0, 180, 0] } : { x: 0, y: 0 }}
               transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
             />
             {techStack.map((tech, index) => (
@@ -61,14 +64,14 @@ export function TechStack() {
               >
                 <motion.div
                   animate={
-                    shouldReduceMotion
-                      ? undefined
-                      : {
+                    shouldAnimate
+                      ? {
                           y: [-6, 6, -6],
                           rotateX: [3, -3, 3],
                           rotateY: [-2, 2, -2],
                           scale: [1.012, 0.992, 1.012],
                         }
+                      : { y: 0, rotateX: 0, rotateY: 0, scale: 1 }
                   }
                   transition={{
                     duration: 7.2,
