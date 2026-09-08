@@ -34,6 +34,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
+  images: {
+    qualities: [75, 82, 90],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
