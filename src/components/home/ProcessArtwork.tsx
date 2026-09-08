@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 
 export type ProcessTitle = "Discover" | "Design" | "Develop" | "Refine" | "Launch";
 
@@ -24,6 +24,7 @@ function Frame({ children, label }: { children: ReactNode; label: string }) {
 }
 
 function Discover({ animated }: { animated: boolean }) {
+  const lineGradientId = useId();
   const nodes = [
     { x: "16%", y: "27%", size: "h-12 w-12" },
     { x: "70%", y: "17%", size: "h-9 w-9" },
@@ -37,7 +38,7 @@ function Discover({ animated }: { animated: boolean }) {
         <motion.path
           d="M82 72 C145 95 175 108 205 130 C255 165 286 80 310 55 M205 130 C260 130 292 170 326 193 M205 130 C153 154 119 188 92 197"
           fill="none"
-          stroke="url(#discover-line)"
+          stroke={`url(#${lineGradientId})`}
           strokeWidth="2"
           strokeDasharray="5 7"
           initial={{ pathLength: 0, opacity: 0 }}
@@ -45,7 +46,7 @@ function Discover({ animated }: { animated: boolean }) {
           transition={{ duration: animated ? 1.3 : 0, ease: "easeOut" }}
         />
         <defs>
-          <linearGradient id="discover-line" x1="70" y1="60" x2="330" y2="200">
+          <linearGradient id={lineGradientId} x1="70" y1="60" x2="330" y2="200">
             <stop stopColor="#2563eb" />
             <stop offset="0.55" stopColor="#06b6d4" />
             <stop offset="1" stopColor="#8b5cf6" />
@@ -152,6 +153,8 @@ function Develop({ animated }: { animated: boolean }) {
 }
 
 function Refine({ animated }: { animated: boolean }) {
+  const scoreGradientId = useId();
+
   return (
     <Frame label="Quality pass">
       <div className="grid h-full grid-cols-[0.9fr_1.1fr] items-center gap-5 px-2 py-5">
@@ -163,7 +166,7 @@ function Refine({ animated }: { animated: boolean }) {
               cy="60"
               r="48"
               fill="none"
-              stroke="url(#score-ring)"
+              stroke={`url(#${scoreGradientId})`}
               strokeWidth="8"
               strokeLinecap="round"
               pathLength="1"
@@ -172,7 +175,7 @@ function Refine({ animated }: { animated: boolean }) {
               transition={{ duration: animated ? 1.3 : 0, ease: [0.16, 1, 0.3, 1] }}
             />
             <defs>
-              <linearGradient id="score-ring">
+              <linearGradient id={scoreGradientId}>
                 <stop stopColor="#2563eb" />
                 <stop offset="1" stopColor="#06b6d4" />
               </linearGradient>

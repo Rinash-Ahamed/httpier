@@ -6,7 +6,13 @@ import { motion } from "motion/react";
 import type { Project } from "@/lib/data";
 import { revealItem } from "@/components/ui/Reveal";
 
-function Mockup({ project }: { project: Project }) {
+function Mockup({
+  project,
+  sizes = "(min-width: 1344px) 1280px, calc(100vw - 40px)",
+}: {
+  project: Project;
+  sizes?: string;
+}) {
   return (
     <div className="relative h-full w-full bg-[var(--color-mist)]">
       <Image
@@ -14,7 +20,7 @@ function Mockup({ project }: { project: Project }) {
         alt={project.imageAlt}
         fill
         quality={90}
-        sizes="(min-width: 1024px) 80vw, 100vw"
+        sizes={sizes}
         className="object-cover object-top"
       />
     </div>
@@ -31,7 +37,10 @@ export function WorkCard({ project }: { project: Project }) {
       >
         <div className="aspect-[16/10] overflow-hidden bg-[var(--color-mist)]">
           <div className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.025]">
-            <Mockup project={project} />
+            <Mockup
+              project={project}
+              sizes="(min-width: 1344px) 628px, (min-width: 640px) calc(50vw - 44px), calc(100vw - 40px)"
+            />
           </div>
         </div>
         <div className="flex items-start justify-between gap-4 p-6">
