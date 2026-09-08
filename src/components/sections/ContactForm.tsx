@@ -60,7 +60,7 @@ function PillGroup({
               type="button"
               onClick={() => onChange(option)}
               aria-pressed={active}
-              className={`rounded-full border px-4 py-2 text-[13.5px] transition-colors duration-200 ${
+              className={`min-h-11 max-w-full rounded-full border px-4 py-2.5 text-center text-[13.5px] leading-snug transition-colors duration-200 ${
                 active
                   ? "border-transparent bg-[var(--color-ink)] text-white"
                   : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]/40"
@@ -150,7 +150,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-8">
+    <form onSubmit={handleSubmit} noValidate className="min-w-0 space-y-8">
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="text-[14px] font-medium text-[var(--color-ink)]">
@@ -245,7 +245,7 @@ export function ContactForm() {
           </label>
           <output
             htmlFor="budget"
-            className="rounded-full bg-[var(--color-mist)] px-3.5 py-1.5 text-[13px] font-medium text-[var(--color-blue)]"
+          className="max-w-full rounded-full bg-[var(--color-mist)] px-3.5 py-1.5 text-[13px] font-medium leading-snug text-[var(--color-blue)]"
           >
             {budgetOptions[form.budget]}
           </output>

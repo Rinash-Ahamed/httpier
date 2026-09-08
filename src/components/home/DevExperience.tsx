@@ -86,7 +86,7 @@ export function DevExperience() {
                   <span className="font-mono-tight text-[12px] uppercase tracking-wider text-[var(--color-cyan)]">
                     {stage.label}
                   </span>
-                  <pre className="font-mono-tight text-[12.5px] leading-[1.7] text-white/80">
+                  <pre className="max-w-full overflow-x-auto pb-1 font-mono-tight text-[12.5px] leading-[1.7] text-white/80">
                     {stage.code}
                   </pre>
                 </div>

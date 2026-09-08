@@ -127,7 +127,7 @@ export function Header() {
           >
             <motion.nav
               aria-label="Mobile"
-              className="flex h-full flex-col justify-center gap-2 px-8 pb-20"
+              className="flex h-full flex-col justify-start gap-1 overflow-y-auto px-6 pb-8 pt-24 sm:justify-center sm:gap-2 sm:px-8 sm:pb-20 sm:pt-0"
               initial="hidden"
               animate="visible"
               variants={{ visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
@@ -139,12 +139,12 @@ export function Header() {
                     hidden: { opacity: 0, y: 24 },
                     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
                   }}
-                  className="overflow-hidden border-b border-[var(--color-line)] py-3"
+                  className="shrink-0 overflow-hidden border-b border-[var(--color-line)] py-2.5 sm:py-3"
                 >
                   <Link
                     href={link.href}
                     onClick={(event) => handleNavClick(event, link.href)}
-                    className="flex items-baseline gap-4 text-4xl font-medium tracking-tight text-[var(--color-ink)]"
+                    className="flex min-h-11 items-center gap-4 text-3xl font-medium tracking-tight text-[var(--color-ink)] sm:text-4xl"
                   >
                     <span className="font-mono-tight text-sm text-[var(--color-blue)]">
                       {String(i + 1).padStart(2, "0")}

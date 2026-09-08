@@ -54,7 +54,7 @@ export default async function CaseStudyPage({
             <div className="mt-6 flex flex-wrap items-center gap-3 font-mono-tight text-[13px] text-[var(--color-ink-soft)]">
               <span>{project.industry}</span>
             </div>
-            <h1 className="mt-3 text-5xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-6xl">
+            <h1 className="mt-3 text-[clamp(2.5rem,11vw,3.75rem)] font-semibold leading-[1.08] tracking-tight text-[var(--color-ink)]">
               {project.name}
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">

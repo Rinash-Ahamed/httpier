@@ -9,7 +9,7 @@ export function Hero() {
       <AmbientBackground />
 
       <div className="container-httpier relative grid gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-8">
-        <div>
+        <div className="min-w-0">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/80 px-3.5 py-1.5 font-mono-tight text-[12px] text-[var(--color-ink-soft)] backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
@@ -17,7 +17,7 @@ export function Hero() {
             </span>
           </Reveal>
 
-          <h1 className="mt-6 text-[13vw] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--color-ink)] sm:text-6xl lg:text-[4.5rem]">
+          <h1 className="mt-6 text-[clamp(2.55rem,11.5vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--color-ink)]">
             <span className="line-mask">
               <span className="hero-line hero-line-first">We build</span>
             </span>

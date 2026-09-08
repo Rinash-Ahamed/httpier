@@ -21,7 +21,7 @@ export function CTASection() {
           ref={ref}
           onPointerMove={handleMove}
           style={{ "--mx": "50%", "--my": "50%" } as React.CSSProperties}
-          className="relative overflow-hidden rounded-3xl bg-[var(--color-navy)] px-8 py-20 text-center sm:px-16 sm:py-28"
+          className="relative overflow-hidden rounded-3xl bg-[var(--color-navy)] px-5 py-16 text-center sm:px-16 sm:py-28"
         >
           <div
             aria-hidden="true"
@@ -34,7 +34,7 @@ export function CTASection() {
           <div className="pointer-events-none absolute inset-0 bg-grid opacity-[0.06] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_50%,black,transparent_80%)]" />
 
           <Reveal className="relative">
-            <h2 className="text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
+            <h2 className="text-[clamp(1.85rem,8vw,3.75rem)] font-semibold leading-[1.05] tracking-tight text-white">
               Have an idea?
               <br />
               Let&rsquo;s put it on the web.
