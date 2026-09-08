@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
-type ProcessTitle = "Discover" | "Design" | "Develop" | "Refine" | "Launch";
+export type ProcessTitle = "Discover" | "Design" | "Develop" | "Refine" | "Launch";
 
 function Frame({ children, label }: { children: ReactNode; label: string }) {
   return (
