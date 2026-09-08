@@ -97,7 +97,11 @@ export function Process() {
                       </p>
 
                       <div className="mt-7 lg:hidden">
-                        <ProcessArtwork step={step.title as ProcessTitle} animate={isActive} />
+                        <ProcessArtwork
+                          step={step.title as ProcessTitle}
+                          animate={isActive}
+                          idPrefix={`mobile-${step.index}`}
+                        />
                       </div>
                     </motion.div>
                   </li>
@@ -118,7 +122,10 @@ export function Process() {
                   transition={{ duration: shouldReduceMotion ? 0.12 : 0.58, ease: [0.16, 1, 0.3, 1] }}
                   className="absolute inset-0"
                 >
-                  <ProcessArtwork step={processSteps[activeStep].title as ProcessTitle} />
+                  <ProcessArtwork
+                    step={processSteps[activeStep].title as ProcessTitle}
+                    idPrefix={`desktop-${processSteps[activeStep].index}`}
+                  />
                 </motion.div>
               </AnimatePresence>
             </div>

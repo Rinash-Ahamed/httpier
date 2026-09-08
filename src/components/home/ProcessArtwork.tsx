@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useId, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export type ProcessTitle = "Discover" | "Design" | "Develop" | "Refine" | "Launch";
 
@@ -23,8 +23,8 @@ function Frame({ children, label }: { children: ReactNode; label: string }) {
   );
 }
 
-function Discover({ animated }: { animated: boolean }) {
-  const lineGradientId = useId();
+function Discover({ animated, idPrefix }: { animated: boolean; idPrefix: string }) {
+  const lineGradientId = `${idPrefix}-discover-line`;
   const nodes = [
     { x: "16%", y: "27%", size: "h-12 w-12" },
     { x: "70%", y: "17%", size: "h-9 w-9" },
@@ -152,8 +152,8 @@ function Develop({ animated }: { animated: boolean }) {
   );
 }
 
-function Refine({ animated }: { animated: boolean }) {
-  const scoreGradientId = useId();
+function Refine({ animated, idPrefix }: { animated: boolean; idPrefix: string }) {
+  const scoreGradientId = `${idPrefix}-score-ring`;
 
   return (
     <Frame label="Quality pass">
@@ -240,13 +240,21 @@ function Launch({ animated }: { animated: boolean }) {
   );
 }
 
-export function ProcessArtwork({ step, animate = true }: { step: ProcessTitle; animate?: boolean }) {
+export function ProcessArtwork({
+  step,
+  animate = true,
+  idPrefix,
+}: {
+  step: ProcessTitle;
+  animate?: boolean;
+  idPrefix: string;
+}) {
   const reduced = Boolean(useReducedMotion());
   const animated = animate && !reduced;
 
-  if (step === "Discover") return <Discover animated={animated} />;
+  if (step === "Discover") return <Discover animated={animated} idPrefix={idPrefix} />;
   if (step === "Design") return <Design animated={animated} />;
   if (step === "Develop") return <Develop animated={animated} />;
-  if (step === "Refine") return <Refine animated={animated} />;
+  if (step === "Refine") return <Refine animated={animated} idPrefix={idPrefix} />;
   return <Launch animated={animated} />;
 }
