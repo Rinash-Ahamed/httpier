@@ -77,8 +77,8 @@ function IdeaVisual({ reduced }: { reduced: boolean }) {
       <motion.span
         aria-hidden="true"
         className="absolute h-3 w-3 rounded-full border-2 border-white bg-[var(--color-blue)] shadow-[0_0_18px_rgba(59,130,246,0.9)]"
-        animate={reduced ? { x: 205, y: 73 } : { x: [20, 205, 176, 205], y: [35, 35, 104, 73] }}
-        transition={reduced ? { duration: 0 } : { duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        animate={reduced ? { x: 20, y: 35 } : { x: [20, 205, 176, 205, 20], y: [35, 35, 104, 73, 35] }}
+        transition={reduced ? { duration: 0 } : { duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
       />
     </motion.div>
   );

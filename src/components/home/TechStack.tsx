@@ -45,37 +45,48 @@ export function TechStack() {
 
           <RevealGroup
             stagger={0.06}
-            className="relative grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3"
+            className="relative grid grid-cols-2 gap-2 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] p-2 [perspective:900px] sm:grid-cols-3"
           >
             <motion.div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 z-10 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(6,182,212,0.08),transparent)] blur-xl"
-              initial={{ x: "-150%" }}
-              animate={shouldReduceMotion ? { x: "150%" } : { x: ["-150%", "450%"] }}
-              transition={shouldReduceMotion ? { duration: 0 } : { duration: 7, repeat: Infinity, repeatDelay: 1.5, ease: "easeInOut" }}
+              className="pointer-events-none absolute -left-16 top-1/4 h-48 w-48 rounded-full bg-[var(--color-blue)]/15 blur-3xl"
+              animate={shouldReduceMotion ? undefined : { x: [0, 280, 0], y: [0, 180, 0] }}
+              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
             />
-            {techStack.map((tech) => (
+            {techStack.map((tech, index) => (
               <motion.div
                 key={tech.name}
                 variants={techItem}
-                whileHover={shouldReduceMotion ? undefined : { y: -4 }}
-                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-                className="group relative flex min-h-32 flex-col justify-between gap-6 overflow-hidden bg-[var(--color-navy)] p-5 transition-colors duration-300 hover:bg-[#101b30]"
+                className="relative min-h-32 [transform-style:preserve-3d]"
               >
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[linear-gradient(90deg,var(--color-blue),var(--color-cyan),var(--color-violet))] transition-transform duration-500 ease-out group-hover:scale-x-100"
-                />
-                <div className="flex items-start justify-between gap-3">
+                <motion.div
+                  animate={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: [-6, 6, -6],
+                          rotateX: [3, -3, 3],
+                          rotateY: [-2, 2, -2],
+                          scale: [1.012, 0.992, 1.012],
+                        }
+                  }
+                  transition={{
+                    duration: 7.2,
+                    delay: -index * 0.45,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="group relative flex h-full min-h-32 flex-col justify-between gap-6 overflow-hidden rounded-xl border border-white/10 bg-[#0e1829]/95 p-5 shadow-[0_14px_36px_-24px_rgba(6,182,212,0.55)] transition-colors duration-500 [backface-visibility:hidden] [will-change:transform] hover:bg-[#122039]"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[linear-gradient(90deg,var(--color-blue),var(--color-cyan),var(--color-violet))] transition-transform duration-500 ease-out group-hover:scale-x-100"
+                  />
                   <span className="font-mono-tight text-[15px] font-medium tracking-tight">
                     {tech.name}
                   </span>
-                  <span
-                    aria-hidden="true"
-                    className="mt-1 h-2 w-2 shrink-0 scale-75 rounded-full bg-[var(--color-cyan)] opacity-40 shadow-[0_0_0_0_rgba(6,182,212,0)] transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-hover:shadow-[0_0_18px_4px_rgba(6,182,212,0.35)]"
-                  />
-                </div>
-                <span className="text-[11.5px] text-white/45">{tech.role}</span>
+                  <span className="text-[11.5px] text-white/45">{tech.role}</span>
+                </motion.div>
               </motion.div>
             ))}
           </RevealGroup>
