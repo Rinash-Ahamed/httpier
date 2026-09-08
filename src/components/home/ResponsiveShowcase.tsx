@@ -157,7 +157,7 @@ export function ResponsiveShowcase() {
             mode="mobile"
             label="Pocket flow"
             delay={0.24}
-            className="relative z-30 sm:absolute sm:bottom-[5%] sm:right-[31%] sm:w-[15%]"
+            className="relative z-30 sm:absolute sm:bottom-[5%] sm:right-[35%] sm:w-[15%]"
           />
 
           <motion.div
