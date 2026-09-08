@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
+import Link from "next/link";
 import { projectTypes, timelines } from "@/lib/data";
 
 type FormState = {
@@ -13,6 +14,7 @@ type FormState = {
   budget: number;
   timeline: string;
   details: string;
+  privacyAccepted: boolean;
 };
 
 const initialState: FormState = {
@@ -24,6 +26,7 @@ const initialState: FormState = {
   budget: 0,
   timeline: "",
   details: "",
+  privacyAccepted: false,
 };
 
 const budgetOptions = [
@@ -95,6 +98,7 @@ export function ContactForm() {
     }
     if (!form.goal.trim()) next.goal = "Tell us what you want to build.";
     if (!form.projectType) next.projectType = "Select a project type.";
+    if (!form.privacyAccepted) next.privacyAccepted = "Please acknowledge the Privacy Policy.";
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -287,6 +291,34 @@ export function ContactForm() {
           onChange={(e) => update("details", e.target.value)}
           className="mt-2 w-full resize-none rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-blue)]"
         />
+      </div>
+
+      <div>
+        <div className="flex items-start gap-3">
+          <input
+            id="privacy-accepted"
+            type="checkbox"
+            checked={form.privacyAccepted}
+            onChange={(event) => update("privacyAccepted", event.target.checked)}
+            aria-invalid={Boolean(errors.privacyAccepted)}
+            aria-describedby={errors.privacyAccepted ? "privacy-error" : undefined}
+            className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[var(--color-blue)]"
+          />
+          <div className="text-[13px] leading-relaxed text-[var(--color-ink-soft)]">
+            <label htmlFor="privacy-accepted" className="cursor-pointer">
+              I understand that HTTPier will use my information to review and respond to this enquiry as described in the{" "}
+            </label>
+            <Link href="/privacy" className="font-medium text-[var(--color-blue)] underline underline-offset-4">
+              Privacy Policy
+            </Link>
+            .
+          </div>
+        </div>
+        {errors.privacyAccepted && (
+          <p id="privacy-error" className="mt-1.5 text-[13px] text-red-600">
+            {errors.privacyAccepted}
+          </p>
+        )}
       </div>
 
       {status === "error" && (
