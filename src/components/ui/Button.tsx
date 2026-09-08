@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, type ReactNode } from "react";
+import { useRef, type MouseEventHandler, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 
 const MotionLink = motion.create(Link);
@@ -12,6 +12,7 @@ type ButtonProps = {
   variant?: "primary" | "secondary" | "ghost";
   className?: string;
   external?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 /**
@@ -20,7 +21,7 @@ type ButtonProps = {
  * plain hover/tap treatment on touch devices automatically since no
  * pointermove events fire there.
  */
-export function Button({ href, children, variant = "primary", className = "", external }: ButtonProps) {
+export function Button({ href, children, variant = "primary", className = "", external, onClick }: ButtonProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -59,6 +60,7 @@ export function Button({ href, children, variant = "primary", className = "", ex
       style={{ x: springX, y: springY }}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
+      onClick={onClick}
       className={`${base} ${styles[variant]} ${className}`}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >

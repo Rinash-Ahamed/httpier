@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState, type MouseEvent } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { navLinks } from "@/lib/data";
+import { scrollWithinCurrentPage } from "@/lib/client-navigation";
 import { Button } from "@/components/ui/Button";
 
 export function Header() {
@@ -25,11 +26,8 @@ export function Header() {
 
   function handleNavClick(event: MouseEvent<HTMLAnchorElement>, href: string) {
     setMenuOpen(false);
-
-    if (href === "/" && window.location.pathname === "/") {
+    if (scrollWithinCurrentPage(href)) {
       event.preventDefault();
-      window.history.replaceState(null, "", "/");
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }
 
@@ -83,7 +81,11 @@ export function Header() {
           </nav>
 
           <div className="hidden lg:block">
-            <Button href="/contact" className="!px-5 !py-2.5 text-[13.5px]">
+            <Button
+              href="/contact"
+              onClick={(event) => handleNavClick(event, "/contact")}
+              className="!px-5 !py-2.5 text-[13.5px]"
+            >
               Start a Project
             </Button>
           </div>
@@ -160,7 +162,11 @@ export function Header() {
                 }}
                 className="pt-6"
               >
-                <Button href="/contact" className="w-full">
+                <Button
+                  href="/contact"
+                  onClick={(event) => handleNavClick(event, "/contact")}
+                  className="w-full"
+                >
                   Start a Project
                 </Button>
               </motion.div>

@@ -23,53 +23,81 @@ function Frame({ children, label }: { children: ReactNode; label: string }) {
   );
 }
 
-function Discover({ animated, idPrefix }: { animated: boolean; idPrefix: string }) {
-  const lineGradientId = `${idPrefix}-discover-line`;
-  const nodes = [
-    { x: "16%", y: "27%", size: "h-12 w-12" },
-    { x: "70%", y: "17%", size: "h-9 w-9" },
-    { x: "76%", y: "68%", size: "h-14 w-14" },
-    { x: "22%", y: "72%", size: "h-8 w-8" },
-  ];
-
+function Discover({ animated }: { animated: boolean }) {
   return (
-    <Frame label="Research map">
-      <svg aria-hidden="true" className="absolute inset-0 h-full w-full" viewBox="0 0 400 260">
-        <motion.path
-          d="M82 72 C145 95 175 108 205 130 C255 165 286 80 310 55 M205 130 C260 130 292 170 326 193 M205 130 C153 154 119 188 92 197"
-          fill="none"
-          stroke={`url(#${lineGradientId})`}
-          strokeWidth="2"
-          strokeDasharray="5 7"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.7 }}
-          transition={{ duration: animated ? 1.3 : 0, ease: "easeOut" }}
-        />
-        <defs>
-          <linearGradient id={lineGradientId} x1="70" y1="60" x2="330" y2="200">
-            <stop stopColor="#2563eb" />
-            <stop offset="0.55" stopColor="#06b6d4" />
-            <stop offset="1" stopColor="#8b5cf6" />
-          </linearGradient>
-        </defs>
-      </svg>
-      <motion.div
-        className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--color-blue)]/20 bg-[var(--color-blue)]/8"
-        animate={animated ? { scale: [0.96, 1.06, 0.96] } : undefined}
-        transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="h-10 w-10 rounded-full bg-[linear-gradient(135deg,var(--color-blue),var(--color-cyan))] shadow-[0_12px_30px_-8px_rgba(37,99,235,0.7)]" />
-      </motion.div>
-      {nodes.map((node, index) => (
+    <Frame label="Discovery workspace">
+      <div className="grid h-full grid-cols-[1.12fr_0.88fr] gap-3 py-5">
         <motion.div
-          key={node.x}
-          className={`absolute ${node.size} rounded-2xl border border-[var(--color-line)] bg-white shadow-sm`}
-          style={{ left: node.x, top: node.y }}
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1, y: animated ? [0, -5, 0] : 0 }}
-          transition={{ opacity: { delay: index * 0.1 }, scale: { delay: index * 0.1 }, y: { duration: 3.5, delay: index * 0.35, repeat: Infinity, ease: "easeInOut" } }}
-        />
-      ))}
+          initial={{ opacity: 0, x: -14 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: animated ? 0.6 : 0 }}
+          className="rounded-xl border border-[var(--color-line)] bg-white p-3 shadow-sm"
+        >
+          <div className="flex items-center justify-between">
+            <span className="font-mono-tight text-[9px] uppercase tracking-wider text-[var(--color-blue)]">
+              Project brief
+            </span>
+            <span className="rounded-full bg-emerald-50 px-2 py-1 text-[8px] text-emerald-700">
+              Aligned
+            </span>
+          </div>
+          <div className="mt-4 space-y-3">
+            {[
+              ["Goal", "More direct bookings"],
+              ["Audience", "Independent travellers"],
+              ["Measure", "Completed enquiries"],
+            ].map(([label, value], index) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: animated ? 0.12 + index * 0.1 : 0, duration: 0.45 }}
+                className="rounded-lg bg-[var(--color-mist)] p-2.5"
+              >
+                <span className="block text-[8px] uppercase tracking-wide text-[var(--color-ink-soft)]/55">{label}</span>
+                <span className="mt-1 block text-[10px] font-medium text-[var(--color-ink)]">{value}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <div className="flex min-w-0 flex-col gap-3">
+          <motion.div
+            initial={{ opacity: 0, x: 14 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: animated ? 0.18 : 0, duration: 0.55 }}
+            className="relative flex-1 overflow-hidden rounded-xl bg-[linear-gradient(145deg,#172554,#2563eb_58%,#06b6d4)] p-3 text-white shadow-sm"
+          >
+            <motion.span
+              aria-hidden="true"
+              className="absolute -right-6 -top-8 h-20 w-20 rounded-full border border-white/25"
+              animate={animated ? { scale: [1, 1.18, 1] } : undefined}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <div className="relative self-end">
+              <span className="font-mono-tight text-[8px] uppercase tracking-wider text-white/60">User insight</span>
+              <p className="mt-2 text-[11px] font-medium leading-snug">&ldquo;Show me the right choice without making me search.&rdquo;</p>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: animated ? 0.3 : 0, duration: 0.5 }}
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-mist)] p-3"
+          >
+            <span className="font-mono-tight text-[8px] uppercase tracking-wider text-[var(--color-ink-soft)]/55">Opportunity</span>
+            <div className="mt-2 flex items-end justify-between gap-2">
+              <span className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">3 taps</span>
+              <motion.span
+                className="mb-1 h-1.5 flex-1 origin-left rounded-full bg-[linear-gradient(90deg,var(--color-blue),var(--color-cyan))]"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: animated ? 0.9 : 0, delay: animated ? 0.4 : 0 }}
+              />
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </Frame>
   );
 }
@@ -252,7 +280,7 @@ export function ProcessArtwork({
   const reduced = Boolean(useReducedMotion());
   const animated = animate && !reduced;
 
-  if (step === "Discover") return <Discover animated={animated} idPrefix={idPrefix} />;
+  if (step === "Discover") return <Discover animated={animated} />;
   if (step === "Design") return <Design animated={animated} />;
   if (step === "Develop") return <Develop animated={animated} />;
   if (step === "Refine") return <Refine animated={animated} idPrefix={idPrefix} />;

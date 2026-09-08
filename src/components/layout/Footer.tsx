@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { navLinks, siteConfig } from "@/lib/data";
+import { scrollWithinCurrentPage } from "@/lib/client-navigation";
 
 const footerNav = [
   ...navLinks,
@@ -89,6 +90,10 @@ export function Footer() {
     setShowBackToTop(latest > 0.05);
   });
 
+  function handleInternalLink(event: MouseEvent<HTMLAnchorElement>, href: string) {
+    if (scrollWithinCurrentPage(href)) event.preventDefault();
+  }
+
   return (
     <footer className="relative overflow-hidden bg-[var(--color-navy)] text-white">
       <DeferredFooterVideo />
@@ -129,6 +134,7 @@ export function Footer() {
           </div>
           <Link
             href="/contact"
+            onClick={(event) => handleInternalLink(event, "/contact")}
             className="inline-flex w-fit items-center gap-3 rounded-full bg-white px-6 py-3.5 text-[15px] font-medium text-[var(--color-navy)] transition-transform hover:-translate-y-0.5"
           >
             Start a project
@@ -138,7 +144,11 @@ export function Footer() {
 
         <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.7fr_1fr_0.7fr] lg:gap-14">
           <div className="max-w-sm">
-            <Link href="/" className="font-mono-tight text-2xl font-semibold tracking-tight">
+            <Link
+              href="/"
+              onClick={(event) => handleInternalLink(event, "/")}
+              className="font-mono-tight text-2xl font-semibold tracking-tight"
+            >
               HTTPier
             </Link>
             <p className="mt-4 text-[15px] leading-relaxed text-white/55">
@@ -154,7 +164,11 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               {footerNav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-[14px] text-white/65 transition-colors hover:text-white">
+                  <Link
+                    href={item.href}
+                    onClick={(event) => handleInternalLink(event, item.href)}
+                    className="text-[14px] text-white/65 transition-colors hover:text-white"
+                  >
                     {item.label}
                   </Link>
                 </li>
@@ -170,7 +184,11 @@ export function Footer() {
               <a href={`tel:${siteConfig.phone}`} className="block text-[14px] text-white/65 transition-colors hover:text-white">
                 +91 9489813846
               </a>
-              <Link href="/contact" className="block text-[14px] text-white/65 transition-colors hover:text-white">
+              <Link
+                href="/contact"
+                onClick={(event) => handleInternalLink(event, "/contact")}
+                className="block text-[14px] text-white/65 transition-colors hover:text-white"
+              >
                 Send a project enquiry
               </Link>
             </div>
@@ -202,10 +220,18 @@ export function Footer() {
             &copy; {new Date().getFullYear()} HTTPier. All rights reserved.
           </p>
           <div className="flex gap-5 text-[12px] text-white/40">
-            <Link href="/privacy" className="transition-colors hover:text-white">
+            <Link
+              href="/privacy"
+              onClick={(event) => handleInternalLink(event, "/privacy")}
+              className="transition-colors hover:text-white"
+            >
               Privacy
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-white">
+            <Link
+              href="/terms"
+              onClick={(event) => handleInternalLink(event, "/terms")}
+              className="transition-colors hover:text-white"
+            >
               Terms
             </Link>
           </div>
