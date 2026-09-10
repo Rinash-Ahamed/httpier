@@ -3,6 +3,7 @@ import { PageHero } from "@/components/sections/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 import { CTASection } from "@/components/home/CTASection";
 import { PrinciplesGrid } from "@/components/sections/PrinciplesGrid";
+import { BrandFilm } from "@/components/about/BrandFilm";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -69,6 +70,10 @@ export default function AboutPage() {
           </div>
 
           <Reveal delay={0.12} y={24} className="mt-10 sm:mt-14">
+            <BrandFilm />
+          </Reveal>
+
+          <Reveal delay={0.12} y={24} className="mt-8 sm:mt-10">
             <a
               href="/explodedview.png"
               target="_blank"
