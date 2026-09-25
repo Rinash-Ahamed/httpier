@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, type MouseEvent } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { navLinks } from "@/lib/data";
 import { scrollWithinCurrentPage } from "@/lib/client-navigation";
 import { Button } from "@/components/ui/Button";
+import { shouldHideSiteChrome } from "@/lib/site-chrome";
 
 export function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -31,8 +34,10 @@ export function Header() {
     }
   }
 
+  if (shouldHideSiteChrome(pathname)) return null;
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header className="site-header fixed inset-x-0 top-0 z-50">
       <div className="container-httpier">
         <motion.div
           animate={{

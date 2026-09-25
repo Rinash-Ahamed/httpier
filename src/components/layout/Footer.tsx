@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { navLinks, siteConfig } from "@/lib/data";
 import { scrollWithinCurrentPage } from "@/lib/client-navigation";
+import { shouldHideSiteChrome } from "@/lib/site-chrome";
 
 const footerNav = [
   ...navLinks,
@@ -83,6 +85,7 @@ function DeferredFooterVideo() {
 }
 
 export function Footer() {
+  const pathname = usePathname();
   const { scrollYProgress } = useScroll();
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -94,8 +97,10 @@ export function Footer() {
     if (scrollWithinCurrentPage(href)) event.preventDefault();
   }
 
+  if (shouldHideSiteChrome(pathname)) return null;
+
   return (
-    <footer className="relative overflow-hidden bg-[var(--color-navy)] text-white">
+    <footer className="site-footer relative overflow-hidden bg-[var(--color-navy)] text-white">
       <DeferredFooterVideo />
       <div
         aria-hidden="true"

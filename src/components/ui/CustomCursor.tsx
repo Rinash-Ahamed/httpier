@@ -78,7 +78,7 @@ export function CustomCursor() {
   return (
     <motion.div
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[100] mix-blend-difference"
+      className="site-interaction pointer-events-none fixed left-0 top-0 z-[100] mix-blend-difference"
       style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
       animate={{ opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.2 }}

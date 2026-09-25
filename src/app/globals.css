@@ -216,3 +216,55 @@ body {
     padding-inline: 2.5rem;
   }
 }
+
+/* Invoice output stays clean when printed or saved as a PDF. */
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #0a0e1a !important;
+  }
+
+  .site-header,
+  .site-footer,
+  .site-interaction,
+  .admin-toolbar,
+  .invoice-actions,
+  .invoice-builder-controls,
+  .invoice-builder-heading {
+    display: none !important;
+  }
+
+  .invoice-print-shell,
+  .admin-shell,
+  .admin-shell-container,
+  .invoice-preview-panel,
+  .invoice-builder-layout {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .admin-shell {
+    min-height: 0 !important;
+  }
+
+  .invoice-sheet {
+    width: 100% !important;
+    max-width: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

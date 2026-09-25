@@ -14,7 +14,7 @@ export function ScrollProgress() {
     <motion.div
       aria-hidden="true"
       style={{ scaleX }}
-      className="fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-[linear-gradient(100deg,var(--color-blue)_0%,var(--color-cyan)_50%,var(--color-violet)_100%)]"
+      className="site-interaction fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-[linear-gradient(100deg,var(--color-blue)_0%,var(--color-cyan)_50%,var(--color-violet)_100%)]"
     />
   );
 }
