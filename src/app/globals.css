@@ -221,11 +221,12 @@ body {
 @media print {
   @page {
     size: A4;
-    margin: 10mm;
+    margin: 0;
   }
 
   html,
   body {
+    margin: 0 !important;
     background: #ffffff !important;
     color: #0a0e1a !important;
   }

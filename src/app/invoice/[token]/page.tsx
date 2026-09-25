@@ -19,7 +19,7 @@ export default async function PublicInvoicePage({ params }: PageProps<"/invoice/
   if (!invoice) notFound();
 
   return (
-    <div className="invoice-print-shell min-h-screen bg-[var(--color-mist)] px-4 pb-20 pt-10 sm:px-8 sm:pb-24 sm:pt-14">
+    <div className="invoice-print-shell min-h-screen bg-[var(--color-mist)] p-0">
       <div className="mx-auto max-w-4xl">
         <div className="invoice-actions mb-6 text-center">
           <p className="font-mono-tight text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-blue)]">
