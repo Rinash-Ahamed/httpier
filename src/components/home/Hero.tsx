@@ -37,10 +37,14 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.24}>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              <Button href="/contact">Start a Project</Button>
-              <Button href="/work" variant="secondary">
-                Explore Our Work
+            <div className="mt-9 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-4">
+              <Button href="/contact" className="w-full !px-3 text-[13px] sm:w-auto sm:!px-6 sm:text-[15px]">
+                <span className="sm:hidden">Start Project</span>
+                <span className="hidden sm:inline">Start a Project</span>
+              </Button>
+              <Button href="/work" variant="secondary" className="w-full !px-3 text-[13px] sm:w-auto sm:!px-6 sm:text-[15px]">
+                <span className="sm:hidden">View Work</span>
+                <span className="hidden sm:inline">Explore Our Work</span>
               </Button>
             </div>
           </Reveal>

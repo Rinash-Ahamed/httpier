@@ -32,7 +32,7 @@ export function FeaturedWork() {
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-14 grid gap-6 sm:grid-cols-2">
+        <RevealGroup className="mt-14 grid grid-cols-2 gap-3 sm:gap-6">
           {projects.map((project) => (
             <WorkCard key={project.slug} project={project} />
           ))}

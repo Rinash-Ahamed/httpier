@@ -142,8 +142,8 @@ export function Footer() {
           </Link>
         </div>
 
-        <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.7fr_1fr_0.7fr] lg:gap-14">
-          <div className="max-w-sm">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-[1.25fr_0.7fr_1fr_0.7fr] lg:gap-14">
+          <div className="col-span-2 max-w-sm lg:col-span-1">
             <Link
               href="/"
               onClick={(event) => handleInternalLink(event, "/")}

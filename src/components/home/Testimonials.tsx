@@ -1,3 +1,7 @@
+"use client";
+
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useEffect, useState } from "react";
 import { Reveal } from "@/components/ui/Reveal";
 
 const testimonials = [
@@ -27,6 +31,96 @@ const testimonials = [
   },
 ];
 
+type Testimonial = (typeof testimonials)[number];
+
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <figure className="flex h-full min-h-[390px] flex-col rounded-3xl border border-[var(--color-line)] bg-white p-7 shadow-[var(--shadow-soft)] transition-transform duration-300 hover:-translate-y-1 sm:min-h-0 sm:p-8">
+      <span
+        className="text-5xl font-medium leading-none text-[var(--color-blue)]/25"
+        aria-hidden="true"
+      >
+        &ldquo;
+      </span>
+      <blockquote className="mt-4 flex-1 text-lg leading-relaxed text-[var(--color-ink)] sm:text-xl">
+        {testimonial.quote}
+      </blockquote>
+      <figcaption className="mt-7 flex items-center gap-3 border-t border-[var(--color-line)] pt-5">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-mist)] font-mono-tight text-[14px] font-semibold text-[var(--color-blue)]">
+          {testimonial.client.charAt(0)}
+        </span>
+        <div>
+          <p className="text-[15px] font-medium text-[var(--color-ink)]">
+            {testimonial.client}
+          </p>
+          <p className="mt-0.5 text-[12px] text-[var(--color-ink-soft)]/70">
+            {testimonial.industry}
+          </p>
+        </div>
+      </figcaption>
+    </figure>
+  );
+}
+
+function MobileTestimonialStack() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const shouldReduceMotion = Boolean(useReducedMotion());
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+
+    const interval = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % testimonials.length);
+    }, 5200);
+
+    return () => window.clearInterval(interval);
+  }, [shouldReduceMotion]);
+
+  return (
+    <div className="mt-14 sm:hidden">
+      <div className="relative pb-3 pr-2">
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-2 bottom-0 top-3 rounded-3xl border border-[var(--color-line)] bg-[var(--color-mist-2)]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-1 bottom-1.5 top-1.5 rounded-3xl border border-[var(--color-line)] bg-[var(--color-mist)]"
+        />
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={testimonials[activeIndex].client}
+            className="relative"
+            initial={shouldReduceMotion ? false : { opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={shouldReduceMotion ? undefined : { opacity: 0, x: -24 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <TestimonialCard testimonial={testimonials[activeIndex]} />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="mt-5 flex items-center justify-center gap-2" aria-label="Choose testimonial">
+        {testimonials.map((testimonial, index) => (
+          <button
+            key={testimonial.client}
+            type="button"
+            onClick={() => setActiveIndex(index)}
+            aria-label={`Show testimonial from ${testimonial.client}`}
+            aria-current={index === activeIndex ? "true" : undefined}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              index === activeIndex
+                ? "w-7 bg-[var(--color-blue)]"
+                : "w-2 bg-[var(--color-line)]"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function Testimonials() {
   return (
     <section
@@ -45,30 +139,12 @@ export function Testimonials() {
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2">
+        <MobileTestimonialStack />
+
+        <div className="mt-14 hidden gap-5 sm:grid sm:grid-cols-2">
           {testimonials.map((testimonial, index) => (
             <Reveal key={testimonial.client} delay={index * 0.05}>
-              <figure className="group flex h-full flex-col rounded-3xl border border-[var(--color-line)] bg-white p-7 shadow-[var(--shadow-soft)] transition-transform duration-300 hover:-translate-y-1 sm:p-8">
-                <span className="text-5xl font-medium leading-none text-[var(--color-blue)]/25" aria-hidden="true">
-                  &ldquo;
-                </span>
-                <blockquote className="mt-4 flex-1 text-lg leading-relaxed text-[var(--color-ink)] sm:text-xl">
-                  {testimonial.quote}
-                </blockquote>
-                <figcaption className="mt-7 flex items-center gap-3 border-t border-[var(--color-line)] pt-5">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-mist)] font-mono-tight text-[14px] font-semibold text-[var(--color-blue)]">
-                    {testimonial.client.charAt(0)}
-                  </span>
-                  <div>
-                    <p className="text-[15px] font-medium text-[var(--color-ink)]">
-                      {testimonial.client}
-                    </p>
-                    <p className="mt-0.5 text-[12px] text-[var(--color-ink-soft)]/70">
-                      {testimonial.industry}
-                    </p>
-                  </div>
-                </figcaption>
-              </figure>
+              <TestimonialCard testimonial={testimonial} />
             </Reveal>
           ))}
         </div>

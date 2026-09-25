@@ -4,6 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { CTASection } from "@/components/home/CTASection";
 import { PrinciplesGrid } from "@/components/sections/PrinciplesGrid";
 import { BrandFilm } from "@/components/about/BrandFilm";
+import { FounderProfile } from "@/components/about/FounderProfile";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -99,7 +100,7 @@ export default function AboutPage() {
       </section>
 
       <section className="border-t border-[var(--color-line)] py-20 sm:py-28">
-        <div className="container-httpier grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div className="container-httpier grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal>
             <p className="font-mono-tight text-[13px] uppercase tracking-widest text-[var(--color-blue)]">
               Founder
@@ -110,10 +111,7 @@ export default function AboutPage() {
             <p className="mt-3 text-[15px] font-medium text-[var(--color-ink-soft)]">
               Rinash Ahamed, Founder &amp; Developer
             </p>
-          </Reveal>
-
-          <Reveal delay={0.08}>
-            <p className="text-xl leading-relaxed text-[var(--color-ink)] sm:text-2xl">
+            <p className="mt-8 text-xl leading-relaxed text-[var(--color-ink)] sm:text-2xl">
               HTTPier started with a simple curiosity: how can technology make
               an idea easier to use, easier to trust and easier to grow?
             </p>
@@ -123,6 +121,10 @@ export default function AboutPage() {
               helps. The goal is simple: less friction for the business and a
               better experience for the customer.
             </p>
+          </Reveal>
+
+          <Reveal delay={0.08} y={24}>
+            <FounderProfile />
           </Reveal>
         </div>
       </section>

@@ -52,10 +52,7 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
         }}
       />
 
-      <div className="relative flex items-start justify-between">
-        <span className="font-mono-tight text-[13px] text-[var(--color-ink-soft)]/60">
-          {service.index}
-        </span>
+      <div className="relative flex justify-end">
         <svg
           aria-hidden="true"
           width="16"
