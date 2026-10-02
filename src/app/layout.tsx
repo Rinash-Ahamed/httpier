@@ -53,7 +53,6 @@ const organizationJsonLd = {
   url: siteConfig.url,
   description: siteConfig.description,
   slogan: siteConfig.tagline,
-  sameAs: [siteConfig.social.linkedin, siteConfig.social.instagram, siteConfig.social.github],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

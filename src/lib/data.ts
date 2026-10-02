@@ -5,24 +5,17 @@ export const siteConfig = {
     "HTTPier is a web engineering studio building high-performance websites, web applications, SaaS products and e-commerce experiences engineered for speed, clarity and growth.",
   url: "https://httpier.in",
   phone: "+919489813846",
-  social: {
-    linkedin: "https://linkedin.com/company/httpier",
-    instagram: "https://instagram.com/httpier",
-    github: "https://github.com/httpier",
-  },
 };
 
 export const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
-  { label: "Testimonials", href: "/#testimonials" },
   { label: "About", href: "/about" },
 ];
 
 export type Service = {
   slug: string;
-  index: string;
   name: string;
   short: string;
   description: string;
@@ -32,7 +25,6 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "website-development",
-    index: "01",
     name: "Website Development",
     short: "Modern, responsive and conversion-focused websites.",
     description:
@@ -41,7 +33,6 @@ export const services: Service[] = [
   },
   {
     slug: "web-applications",
-    index: "02",
     name: "Web Applications",
     short: "Powerful applications built around real business workflows.",
     description:
@@ -50,7 +41,6 @@ export const services: Service[] = [
   },
   {
     slug: "saas-development",
-    index: "03",
     name: "SaaS Development",
     short: "Scalable products designed from MVP through growth.",
     description:
@@ -59,7 +49,6 @@ export const services: Service[] = [
   },
   {
     slug: "ecommerce",
-    index: "04",
     name: "E-commerce",
     short: "Fast shopping experiences built around conversion.",
     description:
@@ -68,7 +57,6 @@ export const services: Service[] = [
   },
   {
     slug: "ui-ux-design",
-    index: "05",
     name: "UI/UX Design",
     short: "Interfaces designed for clarity, usability and brand identity.",
     description:
@@ -77,7 +65,6 @@ export const services: Service[] = [
   },
   {
     slug: "performance-optimization",
-    index: "06",
     name: "Performance Optimization",
     short: "Make existing websites significantly faster and smoother.",
     description:
@@ -94,6 +81,8 @@ export type Project = {
   services: string[];
   image: string;
   imageAlt: string;
+  logo: string;
+  logoAlt: string;
   summary: string;
   problem: string;
   solution: string;
@@ -111,6 +100,8 @@ export const projects: Project[] = [
     services: ["Website Development", "UI/UX Design"],
     image: "/work/profitpro.png",
     imageAlt: "ProfitPro hotel revenue platform homepage",
+    logo: "/work/work-logo/profitpro.png",
+    logoAlt: "ProfitPro logo",
     summary:
       "A conversion-focused platform for hotel revenue management, dynamic pricing and OTA onboarding across multiple booking channels.",
     problem:
@@ -131,6 +122,8 @@ export const projects: Project[] = [
     services: ["UI/UX Design", "Website Development"],
     image: "/work/ayursarga.png",
     imageAlt: "Ayursarga Ayurvedic healthcare platform homepage",
+    logo: "/work/work-logo/ayursarga.png",
+    logoAlt: "Ayursarga logo",
     summary:
       "A healthcare discovery platform that helps people explore Ayurvedic hospitals in Kerala, compare services and request appointments.",
     problem:
@@ -151,6 +144,8 @@ export const projects: Project[] = [
     services: ["E-commerce", "Website Development"],
     image: "/work/amigos-fashion.png",
     imageAlt: "AMIGOS Fashion storefront homepage",
+    logo: "/work/work-logo/amigos.png",
+    logoAlt: "AMIGOS Fashion logo",
     summary:
       "A responsive fashion storefront featuring curated collections for men, women and kids with a streamlined product-discovery experience.",
     problem:
@@ -169,8 +164,10 @@ export const projects: Project[] = [
     url: "https://www.spacedinfra.com",
     industry: "Real Estate",
     services: ["Website Development", "UI/UX Design"],
-    image: "/work/space-d-infra.png",
+    image: "/work/space-d-infra.jpg",
     imageAlt: "Space-D Infra Developers homepage",
+    logo: "/work/work-logo/spaced.png",
+    logoAlt: "Space-D Infra logo",
     summary:
       "A polished corporate website presenting premium residential and commercial developments through a clear, project-led experience.",
     problem:
@@ -182,6 +179,28 @@ export const projects: Project[] = [
     tech: ["Next.js", "React", "Vercel"],
     outcome:
       "A stronger digital presence that presents the developer's work clearly and gives prospective clients a direct route to explore and enquire.",
+  },
+  {
+    slug: "shree-sanjay-equipments",
+    name: "Shree Sanjay Equipments",
+    url: "https://shreesanjayequipments.com",
+    industry: "Construction Equipment",
+    services: ["Website Development", "UI/UX Design"],
+    image: "/work/shree-sanjay-equipments.jpg",
+    imageAlt: "Shree Sanjay Equipments construction equipment catalog",
+    logo: "/work/work-logo/shreesanjay.png",
+    logoAlt: "Shree Sanjay Equipments logo",
+    summary:
+      "A product-led website for a Coimbatore construction equipment business, bringing its machinery range, service expertise and enquiry journey into one clear digital catalog.",
+    problem:
+      "A broad equipment range was difficult to present consistently, leaving customers without a simple way to understand available machines and reach the business with the right requirement.",
+    solution:
+      "A structured product experience that groups machinery by use, communicates practical applications and keeps pricing enquiries close to every product.",
+    contribution:
+      "HTTPier designed and developed the responsive website, product catalog system, equipment presentation and direct enquiry paths.",
+    tech: ["Next.js", "React", "Vercel"],
+    outcome:
+      "A focused digital catalog that makes the equipment range easier to browse and gives contractors a clearer route from product discovery to enquiry.",
   },
 ];
 
@@ -232,42 +251,42 @@ export const whyPrinciples = [
   {
     label: "Speed",
     detail: "Fast loading experiences.",
-    more: "Lean code, optimized assets and thoughtful rendering keep every interaction quick from the first visit onward.",
+    more: "Speed means removing every unnecessary delay. We use lean code, optimized assets and thoughtful rendering so pages load quickly and interactions respond immediately.",
     metric: "< 1.5s",
     metricLabel: "avg. LCP",
   },
   {
     label: "Responsive",
     detail: "Exceptional experiences across every screen.",
-    more: "Layouts are deliberately tuned for phones, tablets, laptops and wide displays instead of simply being scaled down.",
+    more: "Responsive means designing intentionally for every screen. Layout, spacing, typography and interactions are tuned for phones, tablets, laptops and wide displays.",
     metric: "5",
     metricLabel: "breakpoints tuned",
   },
   {
     label: "SEO",
     detail: "Built to be discoverable.",
-    more: "Semantic structure, useful metadata and strong technical foundations help search engines understand every page.",
+    more: "SEO means making every page easy to discover and understand. Semantic structure, useful metadata and strong technical foundations are included from the beginning.",
     metric: "95+",
     metricLabel: "SEO score",
   },
   {
     label: "Scalable",
     detail: "Architecture that grows with the business.",
-    more: "Reusable components and well-defined systems make it easier to add features, pages and users without rebuilding the foundation.",
-    metric: "0→1M",
+    more: "Scalable means the product can grow without replacing its foundation. Reusable components and clear systems support new pages, features and users safely.",
+    metric: "0→1L",
     metricLabel: "users, same base",
   },
   {
     label: "Accessible",
     detail: "Designed for everyone.",
-    more: "Clear contrast, keyboard support, visible focus states and semantic markup make the experience usable by more people.",
+    more: "Accessible means more people can use the experience with confidence. Clear contrast, keyboard support, visible focus states and semantic markup are treated as essentials.",
     metric: "WCAG AA",
     metricLabel: "standard",
   },
   {
     label: "Maintainable",
     detail: "Clean engineering that remains manageable.",
-    more: "A clear structure and typed codebase make future changes safer, faster and easier for any developer to understand.",
+    more: "Maintainable means the website remains clear after launch. A structured, typed codebase makes future updates safer, faster and easier to understand.",
     metric: "100%",
     metricLabel: "typed codebase",
   },

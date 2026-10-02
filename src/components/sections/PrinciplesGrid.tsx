@@ -17,7 +17,7 @@ export function PrinciplesGrid() {
             {item.label}
           </h3>
           <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--color-ink-soft)]">
-            {item.detail}
+            {item.more}
           </p>
         </motion.div>
       ))}

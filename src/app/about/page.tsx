@@ -109,7 +109,7 @@ export default function AboutPage() {
               Curiosity became HTTPier.
             </h2>
             <p className="mt-3 text-[15px] font-medium text-[var(--color-ink-soft)]">
-              Rinash Ahamed, Founder &amp; Developer
+              Rinash, Founder &amp; Developer
             </p>
             <p className="mt-8 text-xl leading-relaxed text-[var(--color-ink)] sm:text-2xl">
               HTTPier started with a simple curiosity: how can technology make

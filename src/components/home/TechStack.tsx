@@ -21,7 +21,7 @@ export function TechStack() {
   const shouldAnimate = useViewportMotion(sectionRef);
 
   return (
-    <section ref={sectionRef} className="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-24 text-white sm:py-32">
+    <section ref={sectionRef} className="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-16 text-white sm:py-24">
       <div className="container-httpier">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div>

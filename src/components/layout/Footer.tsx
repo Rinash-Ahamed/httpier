@@ -13,12 +13,6 @@ const footerNav = [
   { label: "Contact", href: "/contact" },
 ];
 
-const social = [
-  { label: "LinkedIn", href: siteConfig.social.linkedin },
-  { label: "Instagram", href: siteConfig.social.instagram },
-  { label: "GitHub", href: siteConfig.social.github },
-];
-
 type NetworkInformation = {
   saveData?: boolean;
   effectiveType?: string;
@@ -126,13 +120,13 @@ export function Footer() {
         </svg>
       </motion.button>
 
-      <div className="container-httpier relative py-16 sm:py-20">
-        <div className="grid gap-8 border-b border-white/10 pb-14 pr-14 md:grid-cols-[1fr_auto] md:items-end md:pr-0">
+      <div className="container-httpier relative py-10 sm:py-12">
+        <div className="grid gap-5 border-b border-white/10 pb-8 pr-14 md:grid-cols-[1fr_auto] md:items-end md:pr-0">
           <div className="max-w-3xl">
             <p className="font-mono-tight text-[12px] uppercase tracking-[0.18em] text-[var(--color-cyan)]">
               Have something in mind?
             </p>
-            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+            <h2 className="mt-3 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
               Let&rsquo;s build something
               <span className="block text-white/45">worth remembering.</span>
             </h2>
@@ -147,7 +141,7 @@ export function Footer() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-[1.25fr_0.7fr_1fr_0.7fr] lg:gap-14">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-6 py-7 sm:gap-x-6 sm:py-8 lg:grid-cols-[minmax(18rem,1fr)_9rem_14rem] lg:gap-8">
           <div className="col-span-2 max-w-sm lg:col-span-1">
             <Link
               href="/"
@@ -156,7 +150,7 @@ export function Footer() {
             >
               HTTPier
             </Link>
-            <p className="mt-4 text-[15px] leading-relaxed text-white/55">
+            <p className="mt-2 max-w-xs text-[14px] leading-relaxed text-white/55">
               High-performance websites and digital products built for clarity,
               growth and the people who use them.
             </p>
@@ -166,13 +160,13 @@ export function Footer() {
             <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/40">
               Navigate
             </p>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-2 space-y-1.5">
               {footerNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     onClick={(event) => handleInternalLink(event, item.href)}
-                    className="text-[14px] text-white/65 transition-colors hover:text-white"
+                    className="inline-flex py-0.5 text-[13.5px] text-white/65 transition-colors hover:text-white"
                   >
                     {item.label}
                   </Link>
@@ -185,42 +179,23 @@ export function Footer() {
             <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/40">
               Contact
             </p>
-            <div className="mt-4 space-y-3">
-              <a href={`tel:${siteConfig.phone}`} className="block text-[14px] text-white/65 transition-colors hover:text-white">
+            <div className="mt-2 space-y-1.5">
+              <a href={`tel:${siteConfig.phone}`} className="inline-flex py-0.5 text-[13.5px] text-white/65 transition-colors hover:text-white">
                 +91 9489813846
               </a>
               <Link
                 href="/contact"
                 onClick={(event) => handleInternalLink(event, "/contact")}
-                className="block text-[14px] text-white/65 transition-colors hover:text-white"
+                className="block w-fit py-0.5 text-[13.5px] leading-snug text-white/65 transition-colors hover:text-white"
               >
                 Send a project enquiry
               </Link>
             </div>
           </div>
 
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/40">
-              Follow
-            </p>
-            <ul className="mt-4 space-y-3">
-              {social.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[14px] text-white/65 transition-colors hover:text-white"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-        <div className="flex flex-col-reverse items-start gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col-reverse items-start gap-2.5 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[12px] text-white/40">
             &copy; {new Date().getFullYear()} HTTPier. All rights reserved.
           </p>

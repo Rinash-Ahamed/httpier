@@ -1,7 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "@/components/ui/Reveal";
 
 const testimonials = [
@@ -29,24 +28,36 @@ const testimonials = [
     client: "Space-D Infra",
     industry: "Real estate development team",
   },
-];
+] as const;
 
 type Testimonial = (typeof testimonials)[number];
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+function TestimonialCard({
+  testimonial,
+}: {
+  testimonial: Testimonial;
+}) {
   return (
-    <figure className="flex h-full min-h-[390px] flex-col rounded-3xl border border-[var(--color-line)] bg-white p-7 shadow-[var(--shadow-soft)] transition-transform duration-300 hover:-translate-y-1 sm:min-h-0 sm:p-8">
+    <motion.figure
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex h-[420px] w-[min(82vw,430px)] shrink-0 flex-col overflow-hidden rounded-3xl border border-[var(--color-line)] bg-white p-7 shadow-[0_20px_55px_-35px_rgba(10,14,26,0.42)] transition-[border-color,background-color,box-shadow] duration-500 hover:border-blue-400/50 hover:bg-blue-50/40 hover:shadow-[0_26px_75px_-28px_rgba(37,99,235,0.62)] sm:h-[390px] sm:p-8"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-blue-400/25 opacity-30 blur-3xl transition-all duration-500 group-hover:scale-125 group-hover:opacity-100"
+      />
       <span
-        className="text-5xl font-medium leading-none text-[var(--color-blue)]/25"
+        className="relative text-5xl font-medium leading-none text-[var(--color-blue)]/25 transition-colors duration-500 group-hover:text-[var(--color-blue)]/50"
         aria-hidden="true"
       >
         &ldquo;
       </span>
-      <blockquote className="mt-4 flex-1 text-lg leading-relaxed text-[var(--color-ink)] sm:text-xl">
+      <blockquote className="relative mt-4 flex-1 text-[17px] leading-relaxed text-[var(--color-ink)] sm:text-lg">
         {testimonial.quote}
       </blockquote>
-      <figcaption className="mt-7 flex items-center gap-3 border-t border-[var(--color-line)] pt-5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-mist)] font-mono-tight text-[14px] font-semibold text-[var(--color-blue)]">
+      <figcaption className="relative mt-7 flex items-center gap-3 border-t border-[var(--color-line)] pt-5">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-mist)] font-mono-tight text-[14px] font-semibold text-[var(--color-blue)] transition-colors duration-500 group-hover:bg-blue-100">
           {testimonial.client.charAt(0)}
         </span>
         <div>
@@ -58,74 +69,33 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           </p>
         </div>
       </figcaption>
-    </figure>
+    </motion.figure>
   );
 }
 
-function MobileTestimonialStack() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const shouldReduceMotion = Boolean(useReducedMotion());
-
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-
-    const interval = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % testimonials.length);
-    }, 5200);
-
-    return () => window.clearInterval(interval);
-  }, [shouldReduceMotion]);
-
+function TestimonialGroup({ duplicate = false }: { duplicate?: boolean }) {
   return (
-    <div className="mt-14 sm:hidden">
-      <div className="relative pb-3 pr-2">
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-2 bottom-0 top-3 rounded-3xl border border-[var(--color-line)] bg-[var(--color-mist-2)]"
+    <div
+      className="flex shrink-0 items-start gap-4 pr-4 sm:gap-5 sm:pr-5"
+      aria-hidden={duplicate || undefined}
+    >
+      {testimonials.map((testimonial) => (
+        <TestimonialCard
+          key={`${duplicate ? "duplicate-" : ""}${testimonial.client}`}
+          testimonial={testimonial}
         />
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-1 bottom-1.5 top-1.5 rounded-3xl border border-[var(--color-line)] bg-[var(--color-mist)]"
-        />
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={testimonials[activeIndex].client}
-            className="relative"
-            initial={shouldReduceMotion ? false : { opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={shouldReduceMotion ? undefined : { opacity: 0, x: -24 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <TestimonialCard testimonial={testimonials[activeIndex]} />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      <div className="mt-5 flex items-center justify-center gap-2" aria-label="Choose testimonial">
-        {testimonials.map((testimonial, index) => (
-          <button
-            key={testimonial.client}
-            type="button"
-            onClick={() => setActiveIndex(index)}
-            aria-label={`Show testimonial from ${testimonial.client}`}
-            aria-current={index === activeIndex ? "true" : undefined}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              index === activeIndex
-                ? "w-7 bg-[var(--color-blue)]"
-                : "w-2 bg-[var(--color-line)]"
-            }`}
-          />
-        ))}
-      </div>
+      ))}
     </div>
   );
 }
 
 export function Testimonials() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section
       id="testimonials"
-      className="scroll-mt-28 border-t border-[var(--color-line)] py-24 sm:py-32"
+      className="scroll-mt-28 overflow-hidden border-t border-[var(--color-line)] py-16 sm:py-24"
     >
       <div className="container-httpier">
         <Reveal>
@@ -139,14 +109,26 @@ export function Testimonials() {
           </div>
         </Reveal>
 
-        <MobileTestimonialStack />
-
-        <div className="mt-14 hidden gap-5 sm:grid sm:grid-cols-2">
-          {testimonials.map((testimonial, index) => (
-            <Reveal key={testimonial.client} delay={index * 0.05}>
-              <TestimonialCard testimonial={testimonial} />
-            </Reveal>
-          ))}
+        <div
+          className={`relative mt-10 pb-2 sm:mt-12 ${
+            shouldReduceMotion
+              ? "no-scrollbar overflow-x-auto"
+              : "overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"
+          }`}
+        >
+          <motion.div
+            className={`flex w-max items-start ${shouldReduceMotion ? "" : "will-change-transform"}`}
+            initial={false}
+            animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
+            transition={
+              shouldReduceMotion
+                ? undefined
+                : { duration: 42, ease: "linear", repeat: Infinity }
+            }
+          >
+            <TestimonialGroup />
+            {!shouldReduceMotion && <TestimonialGroup duplicate />}
+          </motion.div>
         </div>
       </div>
     </section>

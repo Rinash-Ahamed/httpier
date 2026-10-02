@@ -11,7 +11,6 @@ type FormState = {
   email: string;
   goal: string;
   projectType: string;
-  budget: number;
   timeline: string;
   details: string;
   privacyAccepted: boolean;
@@ -23,22 +22,10 @@ const initialState: FormState = {
   email: "",
   goal: "",
   projectType: "",
-  budget: 0,
   timeline: "",
   details: "",
   privacyAccepted: false,
 };
-
-const budgetOptions = [
-  "Under ₹10,000",
-  "₹10,000 - ₹25,000",
-  "₹25,000 - ₹50,000",
-  "₹50,000 - ₹1 lakh",
-  "₹1 lakh - ₹2 lakh",
-  "₹2 lakh - ₹5 lakh",
-  "₹5 lakh - ₹10 lakh",
-  "₹10 lakh+",
-] as const;
 
 function PillGroup({
   label,
@@ -65,8 +52,8 @@ function PillGroup({
               aria-pressed={active}
               className={`min-h-11 max-w-full rounded-full border px-4 py-2.5 text-center text-[13.5px] leading-snug transition-colors duration-200 ${
                 active
-                  ? "border-transparent bg-[var(--color-ink)] text-white"
-                  : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]/40"
+                  ? "border-transparent bg-[linear-gradient(100deg,var(--color-blue),var(--color-cyan))] text-white shadow-[0_8px_22px_-12px_rgba(37,99,235,0.8)]"
+                  : "border-[var(--color-line)] bg-white/75 text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]/40 hover:bg-blue-50/70 hover:text-[var(--color-blue)]"
               }`}
             >
               {option}
@@ -111,10 +98,7 @@ export function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          budget: budgetOptions[form.budget],
-        }),
+        body: JSON.stringify(form),
       });
 
       if (!response.ok) throw new Error("Contact request failed.");
@@ -130,7 +114,7 @@ export function ContactForm() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-mist)] p-10 text-center"
+        className="rounded-3xl border border-blue-200/70 bg-[linear-gradient(145deg,rgba(239,246,255,0.95),rgba(236,254,255,0.82),rgba(245,243,255,0.9))] p-10 text-center shadow-[0_24px_70px_-34px_rgba(37,99,235,0.45)]"
       >
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(100deg,var(--color-blue),var(--color-cyan))]">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -153,8 +137,11 @@ export function ContactForm() {
     );
   }
 
+  const fieldClassName =
+    "mt-2 w-full rounded-xl border border-blue-100 bg-white/85 px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-[border-color,box-shadow,background-color] placeholder:text-[var(--color-ink-soft)]/40 hover:border-blue-200 focus:border-[var(--color-blue)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(37,99,235,0.09)]";
+
   return (
-    <form onSubmit={handleSubmit} noValidate className="min-w-0 space-y-8">
+    <form onSubmit={handleSubmit} noValidate className="min-w-0 space-y-7">
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="text-[14px] font-medium text-[var(--color-ink)]">
@@ -167,7 +154,7 @@ export function ContactForm() {
             onChange={(e) => update("name", e.target.value)}
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "name-error" : undefined}
-            className="mt-2 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-blue)]"
+            className={fieldClassName}
           />
           {errors.name && (
             <p id="name-error" className="mt-1.5 text-[13px] text-red-600">
@@ -185,7 +172,7 @@ export function ContactForm() {
             type="text"
             value={form.company}
             onChange={(e) => update("company", e.target.value)}
-            className="mt-2 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-blue)]"
+            className={fieldClassName}
           />
         </div>
       </div>
@@ -201,7 +188,7 @@ export function ContactForm() {
           onChange={(e) => update("email", e.target.value)}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? "email-error" : undefined}
-          className="mt-2 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-blue)]"
+          className={fieldClassName}
         />
         {errors.email && (
           <p id="email-error" className="mt-1.5 text-[13px] text-red-600">
@@ -221,7 +208,7 @@ export function ContactForm() {
           onChange={(e) => update("goal", e.target.value)}
           aria-invalid={Boolean(errors.goal)}
           aria-describedby={errors.goal ? "goal-error" : undefined}
-          className="mt-2 w-full resize-none rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-blue)]"
+          className={`${fieldClassName} resize-none`}
         />
         {errors.goal && (
           <p id="goal-error" className="mt-1.5 text-[13px] text-red-600">
@@ -242,36 +229,6 @@ export function ContactForm() {
         )}
       </div>
 
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <label htmlFor="budget" className="text-[14px] font-medium text-[var(--color-ink)]">
-            Estimated budget
-          </label>
-          <output
-            htmlFor="budget"
-          className="max-w-full rounded-full bg-[var(--color-mist)] px-3.5 py-1.5 text-[13px] font-medium leading-snug text-[var(--color-blue)]"
-          >
-            {budgetOptions[form.budget]}
-          </output>
-        </div>
-        <input
-          id="budget"
-          type="range"
-          min={0}
-          max={budgetOptions.length - 1}
-          step={1}
-          value={form.budget}
-          aria-valuetext={budgetOptions[form.budget]}
-          onChange={(event) => update("budget", Number(event.target.value))}
-          className="mt-5 w-full cursor-pointer accent-[var(--color-blue)]"
-        />
-        <div className="mt-2 flex justify-between font-mono-tight text-[11px] text-[var(--color-ink-soft)]/60">
-          <span>&lt; ₹10k</span>
-          <span>₹1 lakh</span>
-          <span>₹10 lakh+</span>
-        </div>
-      </div>
-
       <PillGroup
         label="Timeline"
         options={timelines}
@@ -289,7 +246,7 @@ export function ContactForm() {
           rows={4}
           value={form.details}
           onChange={(e) => update("details", e.target.value)}
-          className="mt-2 w-full resize-none rounded-xl border border-[var(--color-line)] bg-white px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-colors focus:border-[var(--color-blue)]"
+          className={`${fieldClassName} resize-none`}
         />
       </div>
 

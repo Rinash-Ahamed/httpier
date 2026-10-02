@@ -34,6 +34,11 @@ export function Header() {
     }
   }
 
+  function isActivePath(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
   if (shouldHideSiteChrome(pathname)) return null;
 
   return (
@@ -59,12 +64,13 @@ export function Header() {
             data-cursor=""
           >
             <Image
-              src="/brand/httpier-mark.png"
+              src="/icon.png"
               alt=""
               width={32}
-              height={21}
-              className="h-7 w-auto"
-              priority
+              height={32}
+              className="h-8 w-8 object-contain"
+              quality={90}
+              preload
             />
             <span className="font-mono-tight text-[17px] font-semibold tracking-tight text-[var(--color-ink)]">
               HTTPier
@@ -72,17 +78,30 @@ export function Header() {
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={(event) => handleNavClick(event, link.href)}
-                className="group relative rounded-full px-4 py-2 text-[14px] font-medium text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
-              >
-                {link.label}
-                <span className="absolute inset-x-4 -bottom-0 h-px origin-left scale-x-0 bg-[var(--color-blue)] transition-transform duration-300 ease-out group-hover:scale-x-100" />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const active = isActivePath(link.href);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={(event) => handleNavClick(event, link.href)}
+                  aria-current={active ? "page" : undefined}
+                  className={`group relative rounded-full px-4 py-2 text-[14px] font-medium transition-colors ${
+                    active
+                      ? "text-[var(--color-blue)]"
+                      : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
+                  }`}
+                >
+                  {link.label}
+                  <span
+                    className={`absolute inset-x-4 bottom-0 h-0.5 origin-left rounded-full bg-[var(--color-blue)] transition-transform duration-300 ease-out ${
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="hidden lg:block">
@@ -139,27 +158,39 @@ export function Header() {
               animate="visible"
               variants={{ visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
             >
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  variants={{
-                    hidden: { opacity: 0, y: 24 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
-                  }}
-                  className="shrink-0 overflow-hidden border-b border-[var(--color-line)] py-2.5 sm:py-3"
-                >
-                  <Link
-                    href={link.href}
-                    onClick={(event) => handleNavClick(event, link.href)}
-                    className="flex min-h-11 items-center gap-4 text-3xl font-medium tracking-tight text-[var(--color-ink)] sm:text-4xl"
+              {navLinks.map((link, i) => {
+                const active = isActivePath(link.href);
+
+                return (
+                  <motion.div
+                    key={link.href}
+                    variants={{
+                      hidden: { opacity: 0, y: 24 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+                    }}
+                    className="shrink-0 overflow-hidden border-b border-[var(--color-line)] py-2.5 sm:py-3"
                   >
-                    <span className="font-mono-tight text-sm text-[var(--color-blue)]">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={(event) => handleNavClick(event, link.href)}
+                      aria-current={active ? "page" : undefined}
+                      className={`relative flex min-h-11 items-center gap-4 text-3xl font-medium tracking-tight sm:text-4xl ${
+                        active ? "text-[var(--color-blue)]" : "text-[var(--color-ink)]"
+                      }`}
+                    >
+                      <span className="font-mono-tight text-sm text-[var(--color-blue)]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      {link.label}
+                      <span
+                        className={`absolute bottom-0 left-10 h-0.5 rounded-full bg-[var(--color-blue)] transition-transform duration-300 ${
+                          active ? "w-20 scale-x-100" : "w-20 scale-x-0"
+                        }`}
+                      />
+                    </Link>
+                  </motion.div>
+                );
+              })}
               <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 24 },

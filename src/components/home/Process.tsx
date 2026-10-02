@@ -38,7 +38,7 @@ export function Process() {
   });
 
   return (
-    <section id="process" className="border-t border-[var(--color-line)] py-24 sm:py-32">
+    <section id="process" className="border-t border-[var(--color-line)] py-16 sm:py-24">
       <div className="container-httpier">
         <div className="max-w-xl">
           <Reveal>
@@ -53,7 +53,7 @@ export function Process() {
           </Reveal>
         </div>
 
-        <div ref={ref} className="relative mt-16 grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div ref={ref} className="relative mt-10 grid gap-8 sm:mt-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
           <div className="relative">
             <div className="absolute bottom-[10%] left-[15px] top-[10%] w-px bg-[var(--color-line)]" />
             <motion.div
@@ -68,7 +68,7 @@ export function Process() {
                 return (
                   <li
                     key={step.index}
-                    className="relative flex min-h-[34vh] items-center pl-12 py-8 lg:min-h-[42vh]"
+                    className="relative flex min-h-[30vh] items-center py-6 pl-12 lg:min-h-[38vh]"
                   >
                     <motion.span
                       animate={{

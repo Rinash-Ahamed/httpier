@@ -7,7 +7,7 @@ import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
   title: "Work",
-  description: "Selected HTTPier projects across hospitality, healthcare, e-commerce and real estate.",
+  description: "Selected HTTPier projects across hospitality, healthcare, e-commerce, real estate and construction equipment.",
   path: "/work",
 });
 
@@ -17,7 +17,7 @@ export default function WorkPage() {
       <PageHero
         eyebrow="Work"
         title="Work that speaks before we do."
-        description="A selection of live projects across hospitality, healthcare, e-commerce and real estate."
+        description="A selection of live projects across hospitality, healthcare, e-commerce, real estate and construction equipment."
       />
 
       <section className="py-20 sm:py-28">

@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { WorkCarousel } from "@/components/home/WorkCarousel";
+import { Reveal } from "@/components/ui/Reveal";
 import { projects } from "@/lib/data";
-import { Reveal, RevealGroup } from "@/components/ui/Reveal";
-import { WorkCard } from "@/components/sections/WorkCard";
 
 export function FeaturedWork() {
   return (
-    <section className="border-t border-[var(--color-line)] py-24 sm:py-32">
+    <section className="border-t border-[var(--color-line)] py-16 sm:py-24">
       <div className="container-httpier">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-xl">
@@ -25,22 +25,18 @@ export function FeaturedWork() {
           <Reveal delay={0.1}>
             <Link
               href="/work"
-              className="inline-flex items-center gap-1.5 text-[15px] font-medium text-[var(--color-blue)] hover:underline underline-offset-4"
+              className="inline-flex items-center gap-1.5 text-[15px] font-medium text-[var(--color-blue)] underline-offset-4 hover:underline"
             >
-              View all work →
+              View all work -&gt;
             </Link>
           </Reveal>
         </div>
 
-        <RevealGroup className="mt-14 grid grid-cols-2 gap-3 sm:gap-6">
-          {projects.map((project) => (
-            <WorkCard key={project.slug} project={project} />
-          ))}
-        </RevealGroup>
-
-        <p className="mt-8 text-center text-[13px] text-[var(--color-ink-soft)]/60">
-          Explore each case study or visit the live website.
-        </p>
+        <Reveal delay={0.12}>
+          <div className="mt-10 sm:mt-12">
+            <WorkCarousel projects={projects} />
+          </div>
+        </Reveal>
       </div>
     </section>
   );

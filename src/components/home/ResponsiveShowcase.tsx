@@ -110,7 +110,7 @@ export function ResponsiveShowcase() {
   const shouldAnimate = useViewportMotion(sectionRef);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden border-t border-white/10 bg-[var(--color-navy)] py-24 text-white sm:py-32">
+    <section ref={sectionRef} className="relative overflow-hidden border-t border-white/10 bg-[var(--color-navy)] py-16 text-white sm:py-24">
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute -left-32 top-20 h-80 w-80 rounded-full bg-[var(--color-blue)]/15 blur-3xl"
@@ -142,7 +142,7 @@ export function ResponsiveShowcase() {
           </Reveal>
         </div>
 
-        <div className="relative mt-14 grid grid-cols-[1.25fr_0.75fr] items-end gap-4 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] p-4 [perspective:1100px] sm:mt-16 sm:block sm:h-[590px] sm:p-8">
+        <div className="relative mt-10 grid grid-cols-[1.25fr_0.75fr] items-end gap-4 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] p-4 [perspective:1100px] sm:mt-12 sm:block sm:h-[590px] sm:p-8">
           <div aria-hidden="true" className="absolute inset-0 bg-grid opacity-[0.045]" />
           <div aria-hidden="true" className="absolute inset-x-[12%] bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,rgba(37,99,235,0.24),transparent_68%)]" />
 

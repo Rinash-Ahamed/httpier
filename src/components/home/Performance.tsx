@@ -7,10 +7,10 @@ import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 
 export function Performance() {
   return (
-    <section className="relative overflow-hidden border-t border-[var(--color-line)] py-24 sm:py-32">
+    <section className="relative overflow-hidden border-t border-[var(--color-line)] py-16 sm:py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-blue),transparent)]" />
       <div className="container-httpier">
-        <div className="grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-8">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-8">
           <div>
             <Reveal>
               <p className="font-mono-tight text-[13px] uppercase tracking-widest text-[var(--color-blue)]">

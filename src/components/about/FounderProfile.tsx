@@ -150,13 +150,13 @@ export function FounderProfile() {
               <div className="min-w-0 flex-1 leading-tight">
                 <p className="text-[12px] text-white/50">Hello, I&rsquo;m</p>
                 <p className="mt-1 truncate text-[16px] font-semibold tracking-tight sm:text-[18px]">
-                  Rinash Ahamed
+                  Rinash
                 </p>
               </div>
 
               <motion.button
                 type="button"
-                aria-label="Read about Rinash Ahamed"
+                aria-label="Read about Rinash"
                 onClick={() => setState("bio")}
                 whileTap={shouldReduceMotion ? undefined : { scale: 0.92 }}
                 className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-full bg-[#ff8a00] text-white"

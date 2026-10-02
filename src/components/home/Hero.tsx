@@ -5,10 +5,10 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pb-20 pt-36 sm:pt-44 lg:pb-28 lg:pt-52">
-      <AmbientBackground />
+    <section className="relative overflow-hidden pb-16 pt-24 sm:pb-20 sm:pt-28 lg:pt-32">
+      <AmbientBackground animated />
 
-      <div className="container-httpier relative grid gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-8">
+      <div className="container-httpier relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-8">
         <div className="min-w-0">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/80 px-3.5 py-1.5 font-mono-tight text-[12px] text-[var(--color-ink-soft)] backdrop-blur">

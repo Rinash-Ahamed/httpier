@@ -15,13 +15,13 @@ export function CTASection() {
   }
 
   return (
-    <section className="border-t border-[var(--color-line)] py-24 sm:py-32">
+    <section className="border-t border-[var(--color-line)] py-16 sm:py-24">
       <div className="container-httpier">
         <div
           ref={ref}
           onPointerMove={handleMove}
           style={{ "--mx": "50%", "--my": "50%" } as React.CSSProperties}
-          className="relative overflow-hidden rounded-3xl bg-[var(--color-navy)] px-5 py-16 text-center sm:px-16 sm:py-28"
+          className="relative overflow-hidden rounded-3xl bg-[var(--color-navy)] px-5 py-12 text-center sm:px-16 sm:py-20"
         >
           <div
             aria-hidden="true"
