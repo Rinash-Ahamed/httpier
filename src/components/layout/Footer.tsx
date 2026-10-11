@@ -120,8 +120,8 @@ export function Footer() {
         </svg>
       </motion.button>
 
-      <div className="container-httpier relative py-10 sm:py-12">
-        <div className="grid gap-5 border-b border-white/10 pb-8 pr-14 md:grid-cols-[1fr_auto] md:items-end md:pr-0">
+      <div className="container-httpier relative py-7 sm:py-8">
+        <div className="grid gap-4 border-b border-white/10 pb-6 pr-14 md:grid-cols-[1fr_auto] md:items-end md:pr-0">
           <div className="max-w-3xl">
             <p className="font-mono-tight text-[12px] uppercase tracking-[0.18em] text-[var(--color-cyan)]">
               Have something in mind?
@@ -141,7 +141,7 @@ export function Footer() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-4 gap-y-6 py-7 sm:gap-x-6 sm:py-8 lg:grid-cols-[minmax(18rem,1fr)_9rem_14rem] lg:gap-8">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4 py-5 sm:gap-x-6 sm:py-6 lg:grid-cols-[minmax(18rem,1fr)_9rem_14rem] lg:gap-6">
           <div className="col-span-2 max-w-sm lg:col-span-1">
             <Link
               href="/"
@@ -190,12 +190,35 @@ export function Footer() {
               >
                 Send a project enquiry
               </Link>
+              <a
+                href={siteConfig.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 py-0.5 text-[13.5px] text-white/65 transition-colors hover:text-white"
+                aria-label="HTTPier on Instagram - opens in a new tab"
+              >
+                Instagram
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 12 12"
+                  className="size-3"
+                  fill="none"
+                >
+                  <path
+                    d="M3 9 9 3M4 3h5v5"
+                    stroke="currentColor"
+                    strokeWidth="1.25"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
             </div>
           </div>
 
         </div>
 
-        <div className="flex flex-col-reverse items-start gap-2.5 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col-reverse items-start gap-2 border-t border-white/10 pt-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[12px] text-white/40">
             &copy; {new Date().getFullYear()} HTTPier. All rights reserved.
           </p>

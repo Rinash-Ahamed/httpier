@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type MouseEvent } from "react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { navLinks } from "@/lib/data";
 import { scrollWithinCurrentPage } from "@/lib/client-navigation";
 import { Button } from "@/components/ui/Button";
@@ -14,11 +14,23 @@ export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { scrollY } = useScroll();
+  const scrolledRef = useRef(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 24);
-  });
+  useEffect(() => {
+    const updateScrolledState = () => {
+      const nextScrolled = window.scrollY > 24;
+
+      if (nextScrolled !== scrolledRef.current) {
+        scrolledRef.current = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+    };
+
+    updateScrolledState();
+    window.addEventListener("scroll", updateScrolledState, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateScrolledState);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -44,18 +56,12 @@ export function Header() {
   return (
     <header className="site-header fixed inset-x-0 top-0 z-50">
       <div className="container-httpier">
-        <motion.div
-          animate={{
-            marginTop: scrolled ? 12 : 0,
-            paddingInline: scrolled ? 10 : 4,
-            backgroundColor: scrolled ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0)",
-            borderColor: scrolled ? "rgba(228,234,243,1)" : "rgba(228,234,243,0)",
-            boxShadow: scrolled
-              ? "0 1px 2px rgba(10,14,26,0.04), 0 16px 40px -20px rgba(10,14,26,0.25)"
-              : "0 0 0 rgba(0,0,0,0)",
-          }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center justify-between rounded-full border py-2.5 backdrop-blur-xl"
+        <div
+          className={`flex items-center justify-between rounded-full border px-2.5 py-2.5 transition-[transform,background-color,border-color,box-shadow] duration-300 ease-out ${
+            scrolled
+              ? "translate-y-3 border-[var(--color-line)] bg-white/95 shadow-[0_1px_2px_rgba(10,14,26,0.04),0_16px_40px_-20px_rgba(10,14,26,0.25)] lg:bg-white/75 lg:backdrop-blur-xl"
+              : "translate-y-0 border-transparent bg-transparent shadow-none"
+          }`}
         >
           <Link
             href="/"
@@ -139,7 +145,7 @@ export function Header() {
               />
             </span>
           </button>
-        </motion.div>
+        </div>
       </div>
 
       <AnimatePresence>

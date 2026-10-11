@@ -5,6 +5,7 @@ export const siteConfig = {
     "HTTPier is a web engineering studio building high-performance websites, web applications, SaaS products and e-commerce experiences engineered for speed, clarity and growth.",
   url: "https://httpier.in",
   phone: "+919489813846",
+  instagram: "https://www.instagram.com/httpier.in",
 };
 
 export const navLinks = [

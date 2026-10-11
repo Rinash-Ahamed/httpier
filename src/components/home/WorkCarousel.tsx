@@ -8,6 +8,8 @@ import type { Project } from "@/lib/data";
 
 type WorkCarouselProps = { projects: Project[] };
 
+const AUTO_ROTATE_INTERVAL_MS = 3000;
+
 const clamp = (value: number, minimum: number, maximum: number) =>
   Math.min(Math.max(value, minimum), maximum);
 
@@ -51,7 +53,7 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
     if (prefersReducedMotion || isPaused || projects.length < 2) return;
     const timer = window.setInterval(
       () => setActiveIndex((current) => (current + 1) % projects.length),
-      3800,
+      AUTO_ROTATE_INTERVAL_MS,
     );
     return () => window.clearInterval(timer);
   }, [isPaused, prefersReducedMotion, projects.length]);

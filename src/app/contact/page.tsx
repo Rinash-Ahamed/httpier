@@ -9,6 +9,10 @@ export const metadata = createPageMetadata({
   path: "/contact",
 });
 
+const whatsappUrl = `https://wa.me/${siteConfig.phone.replace(/\D/g, "")}?text=${encodeURIComponent(
+  "Hi HTTPier, I would like to discuss a project.",
+)}`;
+
 export default function ContactPage() {
   return (
     <section className="relative overflow-hidden bg-[linear-gradient(145deg,#f8fbff_0%,#eef7ff_46%,#f7f2ff_100%)] pb-20 pt-32 sm:pb-24 sm:pt-40">
@@ -61,6 +65,21 @@ export default function ContactPage() {
                   <p className="font-mono-tight text-[10px] uppercase tracking-[0.16em] text-cyan-200/65">Prefer a call?</p>
                   <a href={`tel:${siteConfig.phone}`} className="mt-1 inline-block text-[14px] text-white/85 transition-colors hover:text-cyan-200">
                     +91 9489813846
+                  </a>
+                </div>
+                <div>
+                  <p className="font-mono-tight text-[10px] uppercase tracking-[0.16em] text-cyan-200/65">
+                    Prefer WhatsApp?
+                  </p>
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center gap-2 rounded-full border border-[#25D366]/35 bg-[#25D366]/12 px-4 py-2 text-[13px] font-medium text-white transition hover:-translate-y-0.5 hover:border-[#25D366]/60 hover:bg-[#25D366]/20"
+                    aria-label="Chat with HTTPier on WhatsApp - opens in a new tab"
+                  >
+                    <span className="size-2 rounded-full bg-[#25D366] shadow-[0_0_12px_rgba(37,211,102,0.8)]" />
+                    Chat on WhatsApp
                   </a>
                 </div>
               </div>
