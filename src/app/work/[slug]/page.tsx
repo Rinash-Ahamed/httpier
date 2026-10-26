@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { projects } from "@/lib/data";
-import { Mockup } from "@/components/sections/WorkCard";
+import { Mockup } from "@/components/sections/ProjectMockup";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { CTASection } from "@/components/home/CTASection";
@@ -166,7 +166,7 @@ export default async function CaseStudyPage({
                   className="group block overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white transition-shadow hover:shadow-[var(--shadow-soft)]"
                 >
                   <div className="aspect-[16/10]">
-                    <Mockup project={p} />
+                    <Mockup project={p} sizes="(min-width: 1344px) 620px, (min-width: 1024px) calc(50vw - 52px), (min-width: 640px) calc(50vw - 44px), calc(100vw - 40px)" />
                   </div>
                   <div className="p-5">
                     <h3 className="text-lg font-medium text-[var(--color-ink)]">{p.name}</h3>

@@ -39,7 +39,7 @@ export default function ContactPage() {
           </Reveal>
         </div>
 
-        <div className="mt-12 grid overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 shadow-[0_30px_90px_-40px_rgba(37,99,235,0.38)] backdrop-blur-xl lg:grid-cols-[0.72fr_1.28fr]">
+        <div className="mt-12 grid overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 shadow-[0_30px_90px_-40px_rgba(37,99,235,0.38)] lg:bg-white/70 lg:backdrop-blur-xl lg:grid-cols-[0.72fr_1.28fr]">
           <Reveal className="h-full">
             <aside className="relative flex h-full min-h-80 flex-col justify-between overflow-hidden bg-[linear-gradient(145deg,#0b1220_0%,#102a56_58%,#164e63_100%)] p-7 text-white sm:p-9 lg:min-h-full">
               <div className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-blue-500/35 blur-3xl" />

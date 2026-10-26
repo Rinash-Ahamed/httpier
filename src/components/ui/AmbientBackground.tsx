@@ -1,3 +1,5 @@
+import { AmbientMotion } from "@/components/ui/AmbientMotion";
+
 export function AmbientBackground({
   className = "",
   animated = false,
@@ -5,11 +7,9 @@ export function AmbientBackground({
   className?: string;
   animated?: boolean;
 }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
-    >
+  const backgroundClassName = `pointer-events-none absolute inset-0 overflow-hidden ${className}`;
+  const content = (
+    <>
       <div className="absolute inset-0 bg-mesh" />
       {animated && (
         <>
@@ -20,6 +20,12 @@ export function AmbientBackground({
         </>
       )}
       <div className="absolute inset-0 bg-grid opacity-[0.5] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent_75%)]" />
-    </div>
+    </>
+  );
+
+  return animated ? (
+    <AmbientMotion className={backgroundClassName}>{content}</AmbientMotion>
+  ) : (
+    <div aria-hidden="true" className={backgroundClassName}>{content}</div>
   );
 }

@@ -82,6 +82,39 @@
   50% { transform: translate3d(-10%, -6%, 0) scale(1.08); }
 }
 
+@keyframes testimonial-scroll {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes origin-panel-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes origin-word-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes origin-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 html {
   scroll-behavior: smooth;
   scrollbar-color: var(--color-blue) var(--color-mist-2);
@@ -118,6 +151,27 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
   text-rendering: optimizeLegibility;
+}
+
+@media (pointer: fine) {
+  html,
+  body {
+    cursor: url("/cursors/httpier-default.svg") 5 4, auto;
+  }
+
+  a,
+  button,
+  summary,
+  select,
+  label[for] {
+    cursor: url("/cursors/httpier-pointer.svg") 5 4, pointer;
+  }
+
+  input,
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+  }
 }
 
 ::selection {
@@ -234,6 +288,59 @@ body {
   animation: hero-gradient-drift-violet 20s ease-in-out infinite;
 }
 
+.testimonial-track {
+  animation: testimonial-scroll 42s linear infinite;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.testimonial-viewport:hover .testimonial-track,
+.testimonial-viewport:focus-within .testimonial-track {
+  animation-play-state: paused;
+}
+
+.origin-panel-enter {
+  animation: origin-panel-enter 0.58s var(--ease-out-expo) both;
+}
+
+.origin-word-enter {
+  animation: origin-word-enter 0.68s var(--ease-out-expo) both;
+}
+
+.origin-progress-fill {
+  width: 100%;
+  animation: origin-progress 3.4s linear both;
+}
+
+.origin-chrome-word {
+  color: transparent;
+  background-image: linear-gradient(
+    120deg,
+    var(--color-indigo),
+    var(--color-cyan),
+    #ec4899,
+    var(--color-indigo)
+  );
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 0.6px rgba(30, 64, 175, 0.2);
+  animation: gradient-shift 6s ease infinite;
+  text-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.22),
+    0 14px 30px rgba(79, 70, 229, 0.2);
+}
+
+.origin-float-panel {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+[data-motion-active="false"] .hero-gradient-orb,
+[data-motion-active="false"] .origin-chrome-word {
+  animation-play-state: paused;
+}
+
 .font-mono-tight {
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   letter-spacing: -0.01em;
@@ -245,6 +352,38 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  .hero-gradient-orb {
+    animation: none;
+    filter: blur(52px);
+    opacity: 0.14;
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-viewport {
+    overflow-x: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .testimonial-track {
+    animation: none;
+    will-change: auto;
+  }
+
+  .testimonial-duplicate {
+    display: none;
+  }
 }
 
 /* Container width used across sections */

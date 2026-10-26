@@ -55,7 +55,7 @@ export function Header() {
 
   return (
     <header className="site-header fixed inset-x-0 top-0 z-50">
-      <div className="container-httpier">
+      <div className="container-httpier relative z-50">
         <div
           className={`flex items-center justify-between rounded-full border px-2.5 py-2.5 transition-[transform,background-color,border-color,box-shadow] duration-300 ease-out ${
             scrolled
@@ -67,7 +67,6 @@ export function Header() {
             href="/"
             onClick={(event) => handleNavClick(event, "/")}
             className="flex items-center gap-2 rounded-full px-2 py-1"
-            data-cursor=""
           >
             <Image
               src="/icon.png"
@@ -155,7 +154,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 top-0 z-40 bg-white/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 top-0 z-40 bg-white lg:hidden"
           >
             <motion.nav
               aria-label="Mobile"

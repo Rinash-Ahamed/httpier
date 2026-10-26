@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { projectTypes, timelines } from "@/lib/data";
@@ -14,6 +14,7 @@ type FormState = {
   timeline: string;
   details: string;
   privacyAccepted: boolean;
+  website: string;
 };
 
 const initialState: FormState = {
@@ -25,6 +26,7 @@ const initialState: FormState = {
   timeline: "",
   details: "",
   privacyAccepted: false,
+  website: "",
 };
 
 function PillGroup({
@@ -66,9 +68,12 @@ function PillGroup({
 }
 
 export function ContactForm() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const isSubmitting = useRef(false);
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [submissionError, setSubmissionError] = useState("");
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -87,30 +92,76 @@ export function ContactForm() {
     if (!form.projectType) next.projectType = "Select a project type.";
     if (!form.privacyAccepted) next.privacyAccepted = "Please acknowledge the Privacy Policy.";
     setErrors(next);
+    if (Object.keys(next).length) {
+      requestAnimationFrame(() => {
+        formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+      });
+    }
     return Object.keys(next).length === 0;
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isSubmitting.current) return;
     if (!validate()) return;
+    isSubmitting.current = true;
     setStatus("loading");
+    setSubmissionError("");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 20000);
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
+        signal: controller.signal,
       });
 
-      if (!response.ok) throw new Error("Contact request failed.");
+      if (!response.headers.get("content-type")?.includes("application/json")) {
+        setSubmissionError(
+          response.status === 404 || response.status === 405
+            ? "The contact service is currently unavailable."
+            : "The contact service returned an unexpected response.",
+        );
+        throw new Error("Unexpected contact response.");
+      }
+      const result: { success?: boolean; error?: string } = await response.json();
+      if (!response.ok || result.success !== true) {
+        const safeMessages = [
+          "Please wait a few minutes before trying again.",
+          "Please check your details and accept the Privacy Policy.",
+          "Your message is too long.",
+        ];
+        const fallbackMessages: Record<number, string> = {
+          400: "Please check your form details.",
+          403: "Please refresh this page before sending your enquiry.",
+          429: "Please wait a few minutes before trying again.",
+          502: "The email service could not deliver your enquiry.",
+          503: "Email enquiries are temporarily unavailable.",
+        };
+        setSubmissionError(
+          result.error && safeMessages.includes(result.error)
+            ? result.error
+            : fallbackMessages[response.status] || "We couldn't confirm your message was sent.",
+        );
+        throw new Error("Contact request was not confirmed.");
+      }
       setStatus("success");
-    } catch {
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        setSubmissionError("The email service took too long to respond, so delivery could not be confirmed.");
+      }
       setStatus("error");
+    } finally {
+      window.clearTimeout(timeout);
+      isSubmitting.current = false;
     }
   }
 
   if (status === "success") {
     return (
       <motion.div
+        role="status"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -133,6 +184,21 @@ export function ContactForm() {
         <p className="mt-2 text-[15px] text-[var(--color-ink-soft)]">
           We&rsquo;ll get back to you within one business day.
         </p>
+        <button
+          type="button"
+          onClick={() => {
+            setForm({ ...initialState });
+            setErrors({});
+            setSubmissionError("");
+            setStatus("idle");
+            requestAnimationFrame(() => {
+              formRef.current?.querySelector<HTMLInputElement>("#name")?.focus();
+            });
+          }}
+          className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full bg-[linear-gradient(100deg,var(--color-blue),var(--color-cyan))] px-6 py-3 text-[14px] font-medium text-white shadow-[0_8px_24px_-8px_rgba(37,99,235,0.45)] transition-opacity hover:opacity-90"
+        >
+          Send another message
+        </button>
       </motion.div>
     );
   }
@@ -141,7 +207,12 @@ export function ContactForm() {
     "mt-2 w-full rounded-xl border border-blue-100 bg-white/85 px-4 py-3 text-[15px] text-[var(--color-ink)] outline-none transition-[border-color,box-shadow,background-color] placeholder:text-[var(--color-ink-soft)]/40 hover:border-blue-200 focus:border-[var(--color-blue)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(37,99,235,0.09)]";
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="min-w-0 space-y-7">
+    <form ref={formRef} onSubmit={handleSubmit} noValidate aria-busy={status === "loading"} className="min-w-0">
+      <fieldset disabled={status === "loading"} className="min-w-0 space-y-7">
+      <div aria-hidden="true" className="hidden">
+        <label htmlFor="contact-website">Leave this field empty</label>
+        <input id="contact-website" name="website" type="text" value={form.website} onChange={(event) => update("website", event.target.value)} tabIndex={-1} autoComplete="off" />
+      </div>
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="text-[14px] font-medium text-[var(--color-ink)]">
@@ -149,6 +220,10 @@ export function ContactForm() {
           </label>
           <input
             id="name"
+            name="name"
+            autoComplete="name"
+            required
+            maxLength={120}
             type="text"
             value={form.name}
             onChange={(e) => update("name", e.target.value)}
@@ -169,6 +244,9 @@ export function ContactForm() {
           </label>
           <input
             id="company"
+            name="company"
+            autoComplete="organization"
+            maxLength={160}
             type="text"
             value={form.company}
             onChange={(e) => update("company", e.target.value)}
@@ -183,6 +261,12 @@ export function ContactForm() {
         </label>
         <input
           id="email"
+          name="email"
+          autoComplete="email"
+          autoCapitalize="none"
+          spellCheck={false}
+          required
+          maxLength={254}
           type="email"
           value={form.email}
           onChange={(e) => update("email", e.target.value)}
@@ -203,6 +287,9 @@ export function ContactForm() {
         </label>
         <textarea
           id="goal"
+          name="goal"
+          required
+          maxLength={3000}
           rows={3}
           value={form.goal}
           onChange={(e) => update("goal", e.target.value)}
@@ -243,6 +330,8 @@ export function ContactForm() {
         </label>
         <textarea
           id="details"
+          name="details"
+          maxLength={6000}
           rows={4}
           value={form.details}
           onChange={(e) => update("details", e.target.value)}
@@ -279,15 +368,16 @@ export function ContactForm() {
       </div>
 
       {status === "error" && (
-        <p className="text-[14px] text-red-600">
-          Something went wrong sending your message. Please try again.
+        <p role="alert" className="text-[14px] text-red-600">
+          {submissionError || "We couldn't confirm your message was sent."} Your details are still here. Please try again or{" "}
+          <a href="mailto:ahamedrinash@gmail.com" className="underline underline-offset-4">email us directly</a>.
         </p>
       )}
 
       <button
         type="submit"
-        disabled={status === "loading"}
-        className="group relative inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(100deg,var(--color-blue)_0%,var(--color-cyan)_100%)] px-6 py-4 text-[15px] font-medium text-white shadow-[0_8px_24px_-8px_rgba(37,99,235,0.55)] transition-opacity disabled:opacity-70 sm:w-auto"
+        disabled={!form.privacyAccepted || status === "loading"}
+        className="group relative inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(100deg,var(--color-blue)_0%,var(--color-cyan)_100%)] px-6 py-4 text-[15px] font-medium text-white shadow-[0_8px_24px_-8px_rgba(37,99,235,0.55)] transition-opacity disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none sm:w-auto"
       >
         {status === "loading" ? (
           <>
@@ -298,6 +388,7 @@ export function ContactForm() {
           "Let's Build It"
         )}
       </button>
+      </fieldset>
     </form>
   );
 }

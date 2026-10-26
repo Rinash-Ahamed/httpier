@@ -4,8 +4,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { ScrollProgress } from "@/components/ui/ScrollProgress";
-import { CustomCursor } from "@/components/ui/CustomCursor";
+import { ProjectBuddy } from "@/components/layout/ProjectBuddy";
 import { siteConfig } from "@/lib/data";
 import { serializeJsonLd } from "@/lib/seo";
 
@@ -76,13 +75,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <ScrollProgress />
         <Header />
         <main id="main-content" className="flex-1">
           {children}
         </main>
         <Footer />
-        <CustomCursor />
+        <ProjectBuddy />
       </body>
     </html>
   );

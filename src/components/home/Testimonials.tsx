@@ -1,7 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "motion/react";
 import { Reveal } from "@/components/ui/Reveal";
+import { usePageVisibility } from "@/hooks/usePageVisibility";
 
 const testimonials = [
   {
@@ -38,10 +40,8 @@ function TestimonialCard({
   testimonial: Testimonial;
 }) {
   return (
-    <motion.figure
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative flex h-[420px] w-[min(82vw,430px)] shrink-0 flex-col overflow-hidden rounded-3xl border border-[var(--color-line)] bg-white p-7 shadow-[0_20px_55px_-35px_rgba(10,14,26,0.42)] transition-[border-color,background-color,box-shadow] duration-500 hover:border-blue-400/50 hover:bg-blue-50/40 hover:shadow-[0_26px_75px_-28px_rgba(37,99,235,0.62)] sm:h-[390px] sm:p-8"
+    <figure
+      className="group relative flex h-[420px] w-[min(82vw,430px)] shrink-0 flex-col overflow-hidden rounded-3xl border border-[var(--color-line)] bg-white p-7 shadow-[0_20px_55px_-35px_rgba(10,14,26,0.42)] transition-[transform,border-color,background-color,box-shadow] duration-500 hover:-translate-y-1.5 hover:border-blue-400/50 hover:bg-blue-50/40 hover:shadow-[0_26px_75px_-28px_rgba(37,99,235,0.62)] sm:h-[390px] sm:p-8"
     >
       <div
         aria-hidden="true"
@@ -53,7 +53,7 @@ function TestimonialCard({
       >
         &ldquo;
       </span>
-      <blockquote className="relative mt-4 flex-1 text-[17px] leading-relaxed text-[var(--color-ink)] sm:text-lg">
+      <blockquote className="relative mt-4 flex-1 text-[16px] leading-relaxed text-[var(--color-ink)] sm:text-lg">
         {testimonial.quote}
       </blockquote>
       <figcaption className="relative mt-7 flex items-center gap-3 border-t border-[var(--color-line)] pt-5">
@@ -69,14 +69,14 @@ function TestimonialCard({
           </p>
         </div>
       </figcaption>
-    </motion.figure>
+    </figure>
   );
 }
 
 function TestimonialGroup({ duplicate = false }: { duplicate?: boolean }) {
   return (
     <div
-      className="flex shrink-0 items-start gap-4 pr-4 sm:gap-5 sm:pr-5"
+      className={`flex shrink-0 items-start gap-4 pr-4 sm:gap-5 sm:pr-5 ${duplicate ? "testimonial-duplicate" : ""}`}
       aria-hidden={duplicate || undefined}
     >
       {testimonials.map((testimonial) => (
@@ -90,10 +90,13 @@ function TestimonialGroup({ duplicate = false }: { duplicate?: boolean }) {
 }
 
 export function Testimonials() {
-  const shouldReduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0.01 });
+  const isPageVisible = usePageVisibility();
 
   return (
     <section
+      ref={sectionRef}
       id="testimonials"
       className="scroll-mt-28 overflow-hidden border-t border-[var(--color-line)] py-16 sm:py-24"
     >
@@ -109,26 +112,11 @@ export function Testimonials() {
           </div>
         </Reveal>
 
-        <div
-          className={`relative mt-10 pb-2 sm:mt-12 ${
-            shouldReduceMotion
-              ? "no-scrollbar overflow-x-auto"
-              : "overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"
-          }`}
-        >
-          <motion.div
-            className={`flex w-max items-start ${shouldReduceMotion ? "" : "will-change-transform"}`}
-            initial={false}
-            animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
-            transition={
-              shouldReduceMotion
-                ? undefined
-                : { duration: 42, ease: "linear", repeat: Infinity }
-            }
-          >
+        <div className="testimonial-viewport relative mt-10 overflow-hidden pb-2 [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] sm:mt-12">
+          <div className="testimonial-track flex w-max items-start" style={{ animationPlayState: isInView && isPageVisible ? undefined : "paused" }}>
             <TestimonialGroup />
-            {!shouldReduceMotion && <TestimonialGroup duplicate />}
-          </motion.div>
+            <TestimonialGroup duplicate />
+          </div>
         </div>
       </div>
     </section>

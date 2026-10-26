@@ -34,6 +34,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   reactStrictMode: true,
+  outputFileTracingIncludes: {
+    "/api/contact": ["./public/icon.png"],
+  },
   images: {
     qualities: [75, 82, 90],
   },

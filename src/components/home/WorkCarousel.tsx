@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useInView, useReducedMotion } from "motion/react";
 import type { Project } from "@/lib/data";
+import { usePageVisibility } from "@/hooks/usePageVisibility";
 
 type WorkCarouselProps = { projects: Project[] };
 
@@ -24,6 +25,8 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(stageRef, { amount: 0.1 });
+  const isPageVisible = usePageVisibility();
   const pointerStartRef = useRef<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [stageWidth, setStageWidth] = useState(0);
@@ -50,17 +53,17 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion || isPaused || projects.length < 2) return;
+    if (prefersReducedMotion || isPaused || !isInView || !isPageVisible || projects.length < 2) return;
     const timer = window.setInterval(
       () => setActiveIndex((current) => (current + 1) % projects.length),
       AUTO_ROTATE_INTERVAL_MS,
     );
     return () => window.clearInterval(timer);
-  }, [isPaused, prefersReducedMotion, projects.length]);
+  }, [isPaused, isInView, isPageVisible, prefersReducedMotion, projects.length]);
 
   if (!projects.length) return null;
 
-  const activeWidth = clamp(stageWidth * 0.58, 270, 670);
+  const activeWidth = Math.min(clamp(stageWidth * 0.58, 270, 670), Math.max(0, stageWidth - 24));
   const activeHeight = clamp(activeWidth * 0.64, 330, 430);
   const sideWidth = clamp(stageWidth * 0.105, 58, 132);
   const sideHeight = activeHeight * 0.78;
@@ -152,7 +155,6 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
                 fill
                 sizes={isActive ? "(max-width: 640px) 78vw, 58vw" : "132px"}
                 className="object-cover transition-transform duration-700 group-hover:scale-[1.015]"
-                preload={index === 0}
                 quality={90}
               />
               <span className="absolute inset-0 bg-gradient-to-t from-[#040b16] via-[#07101f]/25 to-transparent" />
@@ -161,7 +163,7 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
                   <span className="font-mono-tight text-[10px] uppercase tracking-[0.2em] text-cyan-300 sm:text-xs">
                     {project.industry}
                   </span>
-                  <span className="mt-2 flex items-end justify-between gap-4">
+                  <span className="mt-2 flex flex-wrap items-end justify-between gap-2 sm:gap-4">
                     <span className="text-2xl font-semibold tracking-tight sm:text-4xl">{project.name}</span>
                     <span className="shrink-0 text-xs font-medium text-white/70 sm:text-sm">
                       View case study -&gt;

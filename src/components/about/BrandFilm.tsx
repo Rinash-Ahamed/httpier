@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { usePageVisibility } from "@/hooks/usePageVisibility";
 
 type NetworkInformation = {
   saveData?: boolean;
@@ -16,6 +17,7 @@ export function BrandFilm() {
   const [isNearViewport, setIsNearViewport] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const isPageVisible = usePageVisibility();
 
   useEffect(() => {
     if (shouldReduceMotion || !containerRef.current) return;
@@ -41,12 +43,12 @@ export function BrandFilm() {
     const video = videoRef.current;
     if (!video || !isReady) return;
 
-    if (isNearViewport) {
+    if (isNearViewport && isPageVisible && !shouldReduceMotion) {
       void video.play().catch(() => {});
     } else {
       video.pause();
     }
-  }, [isNearViewport, isReady]);
+  }, [isNearViewport, isPageVisible, isReady, shouldReduceMotion]);
 
   return (
     <div>

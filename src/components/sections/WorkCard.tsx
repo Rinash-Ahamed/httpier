@@ -5,34 +5,13 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import type { Project } from "@/lib/data";
 import { revealItem } from "@/components/ui/Reveal";
-
-function Mockup({
-  project,
-  sizes = "(min-width: 1344px) 1280px, calc(100vw - 40px)",
-}: {
-  project: Project;
-  sizes?: string;
-}) {
-  return (
-    <div className="relative h-full w-full bg-[var(--color-mist)]">
-      <Image
-        src={project.image}
-        alt={project.imageAlt}
-        fill
-        quality={90}
-        sizes={sizes}
-        className="object-cover object-top"
-      />
-    </div>
-  );
-}
+import { Mockup } from "@/components/sections/ProjectMockup";
 
 export function WorkCard({ project }: { project: Project }) {
   return (
     <motion.div variants={revealItem}>
       <Link
         href={`/work/${project.slug}`}
-        data-cursor="OPEN"
         className="group block overflow-hidden rounded-2xl border border-[var(--color-line)] bg-white transition-shadow duration-300 hover:shadow-[var(--shadow-elevated)]"
       >
         <div className="aspect-[16/10] overflow-hidden bg-[var(--color-mist)]">
@@ -80,4 +59,3 @@ export function WorkCard({ project }: { project: Project }) {
   );
 }
 
-export { Mockup };

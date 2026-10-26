@@ -56,9 +56,16 @@ project automatically creates its route).
 
 ## Notes
 
-- The contact form (`src/components/sections/ContactForm.tsx`) currently
-  simulates a submission. Wire `handleSubmit` up to a real endpoint (email
-  API, CRM, serverless function) before launch.
+- The contact form posts to `/api/contact`, which sends through Gmail SMTP.
+  Set `SMTP_USER`, `SMTP_PASS` (a Google App Password, not your account
+  password), and `CONTACT_TO_EMAIL` in `.env.local` and Vercel's environment
+  variables. Redeploy after adding or changing Vercel variables. Do not use
+  `NEXT_PUBLIC_` prefixes. The sender is the authenticated Gmail account;
+  Reply-To is the visitor's validated email. The HTML/plain-text template is
+  in `src/lib/contact-email.ts`. Success means Gmail accepted the message,
+  not a guarantee of inbox placement. Per-instance request throttling and a
+  honeypot provide basic abuse protection; use Vercel Firewall rate limits
+  for protection shared across serverless instances.
 - `privacy` and `terms` pages contain placeholder copy - replace before
   launch.
 - The custom cursor and magnetic button effects are desktop/fine-pointer

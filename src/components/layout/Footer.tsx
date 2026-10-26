@@ -3,15 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { navLinks, siteConfig } from "@/lib/data";
 import { scrollWithinCurrentPage } from "@/lib/client-navigation";
 import { shouldHideSiteChrome } from "@/lib/site-chrome";
-
-const footerNav = [
-  ...navLinks,
-  { label: "Contact", href: "/contact" },
-];
+import { usePageVisibility } from "@/hooks/usePageVisibility";
 
 type NetworkInformation = {
   saveData?: boolean;
@@ -21,12 +16,15 @@ type NetworkInformation = {
 function DeferredFooterVideo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const shouldReduceMotion = useReducedMotion();
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isNearFooter, setIsNearFooter] = useState(false);
+  const isPageVisible = usePageVisibility();
 
   useEffect(() => {
-    if (shouldReduceMotion || !containerRef.current) return;
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !containerRef.current
+    ) return;
 
     const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
     if (
@@ -44,18 +42,18 @@ function DeferredFooterVideo() {
 
     observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, [shouldReduceMotion]);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !shouldLoad) return;
 
-    if (isNearFooter) {
+    if (isNearFooter && isPageVisible) {
       void video.play().catch(() => {});
     } else {
       video.pause();
     }
-  }, [isNearFooter, shouldLoad]);
+  }, [isNearFooter, isPageVisible, shouldLoad]);
 
   return (
     <div ref={containerRef} className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -68,7 +66,7 @@ function DeferredFooterVideo() {
           playsInline
           preload="none"
           disablePictureInPicture
-          className="h-full w-full object-cover opacity-20"
+          className="absolute inset-0 h-full w-full object-cover opacity-20"
         >
           <source src="/httpier.mp4" type="video/mp4" />
         </video>
@@ -80,12 +78,23 @@ function DeferredFooterVideo() {
 
 export function Footer() {
   const pathname = usePathname();
-  const { scrollYProgress } = useScroll();
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const showBackToTopRef = useRef(false);
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setShowBackToTop(latest > 0.05);
-  });
+  useEffect(() => {
+    const updateBackToTop = () => {
+      const nextVisible = window.scrollY > Math.max(240, window.innerHeight * 0.5);
+
+      if (nextVisible !== showBackToTopRef.current) {
+        showBackToTopRef.current = nextVisible;
+        setShowBackToTop(nextVisible);
+      }
+    };
+
+    updateBackToTop();
+    window.addEventListener("scroll", updateBackToTop, { passive: true });
+    return () => window.removeEventListener("scroll", updateBackToTop);
+  }, []);
 
   function handleInternalLink(event: MouseEvent<HTMLAnchorElement>, href: string) {
     if (scrollWithinCurrentPage(href)) event.preventDefault();
@@ -100,14 +109,13 @@ export function Footer() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_75%_0%,rgba(37,99,235,0.28),transparent_55%)]"
       />
-      <motion.button
+      <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        animate={{ opacity: showBackToTop ? 1 : 0 }}
         tabIndex={showBackToTop ? 0 : -1}
         aria-hidden={!showBackToTop}
         aria-label="Back to top"
-        className={`absolute right-6 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 backdrop-blur transition-colors hover:border-white/30 hover:bg-white/15 hover:text-white sm:right-10 ${showBackToTop ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`absolute right-6 top-6 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/70 transition-[opacity,background-color,border-color,color] duration-200 hover:border-white/30 hover:bg-white/15 hover:text-white sm:right-10 ${showBackToTop ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
       >
         <svg width="14" height="14" viewBox="0 0 15 15" fill="none" aria-hidden="true">
           <path
@@ -118,7 +126,7 @@ export function Footer() {
             strokeLinejoin="round"
           />
         </svg>
-      </motion.button>
+      </button>
 
       <div className="container-httpier relative py-7 sm:py-8">
         <div className="grid gap-4 border-b border-white/10 pb-6 pr-14 md:grid-cols-[1fr_auto] md:items-end md:pr-0">
@@ -161,7 +169,7 @@ export function Footer() {
               Navigate
             </p>
             <ul className="mt-2 space-y-1.5">
-              {footerNav.map((item) => (
+              {navLinks.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}

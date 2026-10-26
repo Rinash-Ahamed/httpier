@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
 import { motion } from "motion/react";
 import { Reveal, RevealGroup, revealItem } from "@/components/ui/Reveal";
 import { services } from "@/lib/data";
@@ -21,45 +21,56 @@ const values = [
   },
 ];
 
+const capabilityImages: Record<(typeof services)[number]["slug"], string> = {
+  "website-development": "/capabilities/website-development.svg",
+  "web-applications": "/capabilities/web-applications.svg",
+  "saas-development": "/capabilities/saas-development.svg",
+  ecommerce: "/capabilities/ecommerce.svg",
+  "ui-ux-design": "/capabilities/ui-ux-design.svg",
+  "performance-optimization": "/capabilities/performance-optimization.svg",
+};
+
 function ServiceCard({ service }: { service: (typeof services)[number] }) {
-  const ref = useRef<HTMLAnchorElement>(null);
-
-  function handleMove(event: React.PointerEvent<HTMLAnchorElement>) {
-    if (event.pointerType !== "mouse" || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    ref.current.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-    ref.current.style.setProperty("--my", `${event.clientY - rect.top}px`);
-  }
-
   return (
     <motion.a
-      ref={ref}
       href={`/services#${service.slug}`}
-      onPointerMove={handleMove}
       variants={revealItem}
-      data-cursor="VIEW"
-      className="group relative min-w-0 overflow-hidden rounded-xl border border-white/10 bg-white/[0.055] p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-white/[0.09] sm:rounded-2xl sm:p-7"
-      style={
-        {
-          "--mx": "50%",
-          "--my": "50%",
-        } as React.CSSProperties
-      }
+      className="group relative min-w-0 overflow-hidden rounded-xl border border-white/10 bg-[#0b1628] p-4 transition-[transform,border-color,box-shadow] duration-500 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-[0_18px_46px_-28px_rgba(6,182,212,0.7)] sm:rounded-2xl sm:p-7"
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-y-0 right-0 w-[72%] overflow-hidden opacity-30 transition-opacity duration-700 ease-out [mask-image:linear-gradient(to_right,transparent_0%,rgba(0,0,0,0.5)_26%,black_70%)] group-hover:opacity-75 group-focus-visible:opacity-75"
+      >
+        <Image
+          src={capabilityImages[service.slug]}
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 24vw, 36vw"
+          className="translate-x-[12%] scale-[1.48] object-cover object-center transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-[8%] group-hover:scale-[1.38] group-focus-visible:translate-x-[8%] group-focus-visible:scale-[1.38]"
+        />
+      </span>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0b1628_0%,rgba(11,22,40,0.96)_48%,rgba(11,22,40,0.38)_100%)]"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_35%,rgba(7,16,31,0.72)_100%)]"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 group-focus-visible:opacity-100"
         style={{
           background:
-            "radial-gradient(240px circle at var(--mx) var(--my), rgba(37,99,235,0.28), transparent 70%)",
+            "radial-gradient(240px circle at 82% 18%, rgba(37,99,235,0.28), transparent 70%)",
         }}
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 group-focus-visible:opacity-100"
         style={{
           background:
-            "radial-gradient(320px circle at var(--mx) var(--my), rgba(6,182,212,0.48), transparent 40%)",
+            "radial-gradient(320px circle at 82% 18%, rgba(6,182,212,0.48), transparent 40%)",
           padding: 1,
           WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor",
@@ -67,7 +78,10 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
         }}
       />
 
-      <div className="relative flex justify-end">
+      <div className="relative flex items-center justify-end gap-1.5">
+        <span className="translate-x-1 font-mono-tight text-[9px] font-medium uppercase tracking-[0.15em] text-cyan-300 opacity-0 transition-[opacity,transform] duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
+          View
+        </span>
         <svg
           aria-hidden="true"
           width="16"
