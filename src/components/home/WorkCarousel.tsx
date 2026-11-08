@@ -154,7 +154,7 @@ export function WorkCarousel({ projects }: WorkCarouselProps) {
                 alt={project.imageAlt}
                 fill
                 sizes={isActive ? "(max-width: 640px) 78vw, 58vw" : "132px"}
-                className="object-cover transition-transform duration-700 group-hover:scale-[1.015]"
+                className={`${project.imageFit === "contain" ? "object-contain bg-[#070a10]" : "object-cover"} transition-transform duration-700 group-hover:scale-[1.015]`}
                 quality={90}
               />
               <span className="absolute inset-0 bg-gradient-to-t from-[#040b16] via-[#07101f]/25 to-transparent" />

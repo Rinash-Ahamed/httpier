@@ -16,7 +16,7 @@ export function Mockup({
         fill
         quality={90}
         sizes={sizes}
-        className="object-cover object-top"
+        className={project.imageFit === "contain" ? "object-contain bg-[#070a10]" : "object-cover object-top"}
       />
     </div>
   );

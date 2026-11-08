@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
   const session = await getAdminSession();
-  if (session.isAuthenticated) redirect("/admin/invoices");
+  if (session.isAuthenticated) redirect("/admin/clients");
 
   return (
     <div className="relative min-h-[100svh] overflow-hidden bg-[var(--color-mist)] px-5 pb-20 pt-32 sm:px-8 sm:pt-40">
@@ -27,11 +27,11 @@ export default async function LoginPage() {
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">Welcome back.</h1>
         <p className="mt-3 text-sm leading-6 text-[var(--color-ink-soft)]">
-          Sign in to prepare and share secure client invoices.
+          Manage clients, track payments and prepare invoices.
         </p>
         <LoginForm />
         <p className="mt-6 text-center text-[11px] leading-5 text-[var(--color-ink-soft)]">
-          Protected by a signed, HTTP-only session.
+          Secure admin access with Firebase Authentication.
         </p>
       </section>
     </div>

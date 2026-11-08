@@ -190,7 +190,7 @@ export function InvoiceDocument({ invoice, preview = false }: InvoiceDocumentPro
               <dd>{formatInr(totals.total)}</dd>
             </div>
             <div className="flex justify-between gap-4 text-[var(--color-ink-soft)]">
-              <dt>Paid</dt>
+              <dt>Advance Paid</dt>
               <dd>{formatInr(totals.paid)}</dd>
             </div>
             <div className="flex justify-between gap-4 rounded-xl bg-[var(--color-ink)] px-4 py-3 text-white">

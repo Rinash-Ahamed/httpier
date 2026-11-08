@@ -83,6 +83,7 @@ export type Project = {
   services: string[];
   image: string;
   imageAlt: string;
+  imageFit?: "cover" | "contain";
   logo: string;
   logoAlt: string;
   summary: string;
@@ -94,6 +95,72 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "strategy-experts",
+    name: "Strategy Experts",
+    url: "https://www.strategyexperts.in/",
+    industry: "Business Consulting",
+    services: ["Website Development", "UI/UX Design"],
+    image: "/work/strategyexperts-preview.webp",
+    imageAlt: "Strategy Experts homepage with business consulting services and Grow Smarter headline",
+    logo: "/work/work-logo/strategy-experts.png",
+    logoAlt: "Strategy Experts logo",
+    summary:
+      "A business consulting website bringing restaurant operations, hotel revenue management, e-commerce support and digital marketing into one clear service experience.",
+    problem:
+      "A broad consulting offer needs to communicate its value clearly to different audiences, from restaurant owners and hoteliers to e-commerce businesses.",
+    solution:
+      "An organized service experience with dedicated areas of expertise, product previews and direct routes to start a business conversation.",
+    contribution:
+      "HTTPier designed and developed the responsive website, service presentation, product showcase and guided enquiry experience.",
+    tech: ["Next.js", "React", "Responsive UI"],
+    outcome:
+      "A single digital destination that connects each business audience with relevant expertise and a clear next step toward an enquiry.",
+  },
+  {
+    slug: "gamexchange",
+    name: "GameXchange",
+    url: "https://gamexchange.co.in/",
+    industry: "Gaming Retail & Services",
+    services: ["Website Development", "UI/UX Design", "E-commerce"],
+    image: "/work/gamexchange-preview.webp",
+    imageAlt: "GameXchange homepage with gaming consoles and Your Game. Your Rules. headline",
+    logo: "/work/work-logo/gamexchange.png",
+    logoAlt: "GameXchange logo",
+    summary:
+      "A gaming retail and service experience connecting console shopping, trade-ins, repairs and gaming-zone discovery for players in Coimbatore.",
+    problem:
+      "Buying gaming hardware, exchanging a console, arranging repairs and finding somewhere to play involve different journeys that need to stay easy to navigate.",
+    solution:
+      "A distinctive gaming experience with clear paths into the shop, guided trade-in enquiries, repair requests and gaming-zone information.",
+    contribution:
+      "HTTPier designed and developed the responsive website, product and service presentation, trade-in journey and repair enquiry interfaces.",
+    tech: ["Next.js", "React", "Responsive UI"],
+    outcome:
+      "A connected online presence that brings GameXchange's retail, repair and play experiences together while giving each service its own clear entry point.",
+  },
+  {
+    slug: "alltime-wellness",
+    name: "Alltime Wellness",
+    url: "https://www.alltimewellness.in/",
+    industry: "Home Wellness Services",
+    services: ["Website Development", "UI/UX Design"],
+    image: "/work/alltime-preview.webp",
+    imageAlt: "Alltime Wellness homepage with floating green leaves and Feel restored headline",
+    logo: "/work/work-logo/alltime-wellness.png",
+    logoAlt: "Alltime Wellness logo",
+    summary:
+      "A calm wellness website presenting massage, facial and recovery treatments delivered at home across Pollachi and Coimbatore.",
+    problem:
+      "Customers exploring home wellness services need to understand treatments, pricing, service areas and how to request a visit before making contact.",
+    solution:
+      "A considered service experience combining treatment details, transparent pricing, practical guidance and a WhatsApp enquiry journey.",
+    contribution:
+      "HTTPier designed and developed the responsive website, treatment presentation, wellness visual direction and visit-request form with WhatsApp handoff.",
+    tech: ["React", "CSS", "WhatsApp Integration"],
+    outcome:
+      "An approachable digital presence that helps visitors explore home treatments and send their preferred service, location and appointment details directly to the team.",
+  },
   {
     slug: "profitpro",
     name: "ProfitPro",

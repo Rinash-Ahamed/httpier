@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition, type ChangeEvent } from "react";
-import { createInvoiceLinkAction } from "@/app/admin/invoices/actions";
+import { useMemo, useState, type ChangeEvent } from "react";
 import { InvoiceDocument } from "@/components/invoice/InvoiceDocument";
 import type {
   InvoiceDraft,
@@ -50,9 +49,8 @@ function FormSection({
 
 export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps) {
   const [draft, setDraft] = useState(initialInvoice);
-  const [publishedPath, setPublishedPath] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [isExporting, setIsExporting] = useState(false);
   const totals = useMemo(() => calculateInvoiceTotals(draft), [draft]);
   const previewInvoice: InvoiceRecord = {
     ...draft,
@@ -62,7 +60,6 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
 
   function changeDraft(patch: Partial<InvoiceDraft>) {
     setDraft((current) => ({ ...current, ...patch }));
-    setPublishedPath(null);
     setNotice(null);
   }
 
@@ -104,47 +101,43 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
     changeDraft({ items: draft.items.filter((item) => item.id !== id) });
   }
 
-  async function publishInvoice() {
-    if (publishedPath) return publishedPath;
-
-    const result = await createInvoiceLinkAction(draft);
-    if (!result.ok) {
-      setNotice(result.error);
-      return null;
+  async function downloadImage() {
+    if (isExporting) return;
+    const invoice = document.getElementById("invoice-document");
+    if (!invoice) return;
+    setIsExporting(true);
+    setNotice(null);
+    let clone: HTMLElement | undefined;
+    try {
+      const { toBlob } = await import("html-to-image");
+      await document.fonts.ready;
+      clone = invoice.cloneNode(true) as HTMLElement;
+      clone.removeAttribute("id");
+      Object.assign(clone.style, { position: "fixed", left: "-10000px", top: "0", width: "800px", height: "auto", boxShadow: "none", borderRadius: "0" });
+      document.body.appendChild(clone);
+      await Promise.all(Array.from(clone.querySelectorAll("img"), async (img) => {
+        img.loading = "eager";
+        await img.decode();
+      }));
+      const blob = await toBlob(clone, {
+        backgroundColor: "#ffffff", pixelRatio: 2,
+        width: 800, height: clone.scrollHeight,
+        style: { position: "static", left: "auto", top: "auto" },
+      });
+      if (!blob) throw new Error("Image export failed");
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `HTTPier-Invoice-${draft.invoiceNumber.replace(/[^a-zA-Z0-9_-]/g, "-") || "draft"}.png`;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+      setNotice("Invoice image downloaded.");
+    } catch {
+      setNotice("Unable to download the image. Please try again or use Download PDF.");
+    } finally {
+      clone?.remove();
+      setIsExporting(false);
     }
-
-    setPublishedPath(result.path);
-    return result.path;
-  }
-
-  function runAction(action: "preview" | "copy" | "share") {
-    startTransition(async () => {
-      setNotice(null);
-      const path = await publishInvoice();
-      if (!path) return;
-
-      const publicUrl = new URL(path, window.location.origin).toString();
-
-      if (action === "preview") {
-        window.open(publicUrl, "_blank", "noopener,noreferrer");
-        setNotice("Client invoice opened in a new tab.");
-        return;
-      }
-
-      if (action === "share" && navigator.share) {
-        await navigator
-          .share({
-            title: `HTTPier invoice ${draft.invoiceNumber}`,
-            text: `Invoice for ${draft.projectName}`,
-            url: publicUrl,
-          })
-          .catch(() => undefined);
-        return;
-      }
-
-      await navigator.clipboard.writeText(publicUrl);
-      setNotice(action === "share" ? "Sharing is unavailable, so the link was copied." : "Payment link copied.");
-    });
   }
 
   const actionButton =
@@ -157,28 +150,22 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
           <p className="font-mono-tight text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-blue)]">
             New invoice
           </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">Build it. Review it. Share it.</h1>
+          <h1 className="mt-3 text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">Build it. Review it. Download it.</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--color-ink-soft)]">
-            Your preview updates live. Generate the secure client link only when the invoice is ready.
+            Your preview updates live. Download the finished invoice as a PDF or image. Invoices are not saved in the portal.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => window.print()} className={actionButton}>
-            Print
-          </button>
           <button type="button" onClick={() => window.print()} className={actionButton} title="Choose Save as PDF in the print dialog">
             Download PDF
           </button>
-          <button type="button" disabled={isPending} onClick={() => runAction("copy")} className={actionButton}>
-            Copy payment link
-          </button>
           <button
             type="button"
-            disabled={isPending}
-            onClick={() => runAction("share")}
+            disabled={isExporting}
+            onClick={downloadImage}
             className="rounded-full bg-[var(--color-ink)] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[var(--color-blue)] disabled:cursor-wait disabled:opacity-50"
           >
-            {isPending ? "Preparing..." : "Share invoice"}
+            {isExporting ? "Preparing image..." : "Download as Image"}
           </button>
         </div>
       </div>
@@ -334,7 +321,7 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
                 <input id="taxRate" type="number" min="0" max="100" step="0.01" value={draft.taxRate || ""} onChange={updateNumber("taxRate")} className={inputClass} placeholder="0" />
               </div>
               <div>
-                <FieldLabel htmlFor="amountPaid">Already paid in INR</FieldLabel>
+                <FieldLabel htmlFor="amountPaid">Advance Paid in INR</FieldLabel>
                 <input id="amountPaid" type="number" min="0" step="0.01" value={draft.amountPaid || ""} onChange={updateNumber("amountPaid")} className={inputClass} placeholder="0" />
               </div>
             </div>
@@ -358,14 +345,6 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
             </div>
           </FormSection>
 
-          <button
-            type="button"
-            disabled={isPending}
-            onClick={() => runAction("preview")}
-            className="flex w-full items-center justify-center rounded-full bg-[var(--color-blue)] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-50"
-          >
-            {isPending ? "Creating secure link..." : "Create and preview client invoice"}
-          </button>
         </div>
 
         <aside className="invoice-preview-panel min-w-0 xl:sticky xl:top-28">

@@ -56,6 +56,11 @@ project automatically creates its route).
 
 ## Notes
 
+- The admin portal now uses Firebase email/password authentication and Firestore
+  client/payment records. Follow [Firebase setup](docs/firebase-admin-setup.md),
+  then sign in at `/login` and open `/admin/clients`. Shared-password admin
+  authentication is no longer used. No Firebase credentials belong in `public/`.
+
 - The contact form posts to `/api/contact`, which sends through Gmail SMTP.
   Set `SMTP_USER`, `SMTP_PASS` (a Google App Password, not your account
   password), and `CONTACT_TO_EMAIL` in `.env.local` and Vercel's environment

@@ -9,13 +9,8 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
     <div className="admin-shell min-h-screen bg-[var(--color-mist)] pb-20 pt-6 sm:pt-8">
       <div className="admin-shell-container container-httpier">
         <div className="admin-toolbar mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white bg-white/85 px-4 py-3 shadow-[var(--shadow-soft)] backdrop-blur sm:px-5">
-          <div className="flex items-center gap-1">
-            <Link
-              href="/admin/invoices"
-              className="rounded-full px-3 py-2 text-sm font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-mist)]"
-            >
-              Invoices
-            </Link>
+          <div className="flex flex-wrap items-center gap-1">
+            <Link href="/admin/clients" className="rounded-full px-3 py-2 text-sm font-semibold transition hover:bg-blue-50 hover:text-blue-700">Clients</Link>
             <Link
               href="/admin/invoices/new"
               className="rounded-full px-3 py-2 text-sm text-[var(--color-ink-soft)] transition hover:bg-[var(--color-mist)] hover:text-[var(--color-ink)]"

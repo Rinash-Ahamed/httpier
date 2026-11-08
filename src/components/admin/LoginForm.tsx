@@ -11,6 +11,11 @@ export function LoginForm() {
   return (
     <form action={action} className="mt-8 space-y-5">
       <div>
+        <label htmlFor="email" className="text-sm font-medium">Admin email</label>
+        <input id="email" name="email" type="email" autoComplete="username" required autoFocus maxLength={254}
+          className="mt-2 h-12 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 text-base focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10" />
+      </div>
+      <div>
         <label htmlFor="password" className="text-sm font-medium text-[var(--color-ink)]">
           Admin password
         </label>
@@ -20,7 +25,6 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          autoFocus
           className="mt-2 h-12 w-full rounded-xl border border-[var(--color-line)] bg-white px-4 text-base text-[var(--color-ink)] shadow-sm transition placeholder:text-slate-400 hover:border-slate-300 focus:border-[var(--color-blue)] focus:outline-none focus:ring-4 focus:ring-blue-500/10"
           placeholder="Enter your password"
         />
@@ -35,7 +39,7 @@ export function LoginForm() {
         disabled={pending}
         className="flex h-12 w-full items-center justify-center rounded-full bg-[var(--color-ink)] px-5 text-sm font-semibold text-white transition hover:bg-[var(--color-blue)] disabled:cursor-wait disabled:opacity-60"
       >
-        {pending ? "Signing in..." : "Continue to invoices"}
+        {pending ? "Signing in..." : "Sign in to admin"}
       </button>
     </form>
   );
