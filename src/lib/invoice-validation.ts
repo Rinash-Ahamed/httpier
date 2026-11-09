@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { InvoiceDraft, InvoiceItem } from "@/lib/invoice-types";
+import { sanitizeInvoiceSupport, validateInvoiceSupport } from "@/lib/invoice-support";
 
 const MAX_ITEMS = 20;
 
@@ -29,6 +30,7 @@ function sanitizeItem(value: unknown, index: number): InvoiceItem {
 export function sanitizeInvoiceDraft(value: unknown): InvoiceDraft {
   const invoice = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
   const rawItems = Array.isArray(invoice.items) ? invoice.items.slice(0, MAX_ITEMS) : [];
+  const support = sanitizeInvoiceSupport(invoice.support);
 
   return {
     clientName: text(invoice.clientName, 120),
@@ -45,6 +47,7 @@ export function sanitizeInvoiceDraft(value: unknown): InvoiceDraft {
     discount: amount(invoice.discount),
     taxRate: amount(invoice.taxRate, 100),
     amountPaid: amount(invoice.amountPaid),
+    ...(support ? { support } : {}),
   };
 }
 
@@ -62,5 +65,5 @@ export function validateInvoiceDraft(invoice: InvoiceDraft) {
     return "Every invoice item needs a quantity greater than zero.";
   }
 
-  return null;
+  return validateInvoiceSupport(invoice.support);
 }

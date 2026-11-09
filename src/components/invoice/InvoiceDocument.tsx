@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { InvoiceSupportSection } from "@/components/invoice/InvoiceSupportSection";
 import type { InvoiceRecord } from "@/lib/invoice-types";
 import {
   buildUpiPaymentUrl,
@@ -102,7 +103,7 @@ export function InvoiceDocument({ invoice, preview = false }: InvoiceDocumentPro
             return (
               <div
                 key={item.id}
-                className="grid gap-3 py-4 sm:grid-cols-[minmax(0,1fr)_72px_110px_110px] sm:gap-4"
+                className="invoice-service-row grid gap-3 py-4 sm:grid-cols-[minmax(0,1fr)_72px_110px_110px] sm:gap-4"
               >
                 <div>
                   <p className="font-medium">{item.serviceName || "Service"}</p>
@@ -129,14 +130,14 @@ export function InvoiceDocument({ invoice, preview = false }: InvoiceDocumentPro
           })}
         </div>
 
-        <div className="mt-5 grid gap-8 border-t border-[var(--color-line)] pt-6 lg:grid-cols-[1fr_310px]">
+        <div className="invoice-payment-summary mt-5 grid gap-8 border-t border-[var(--color-line)] pt-6 lg:grid-cols-[1fr_310px]">
           <div className="rounded-2xl bg-[var(--color-mist)] p-5">
             <p className="font-mono-tight text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-blue)]">
               Payment
             </p>
-            <div className="mt-4 flex items-center gap-4">
+            <div className="invoice-payment-content mt-4 flex flex-wrap items-start gap-4">
+              {totals.balance > 0 && upiUrl && (
               <div className="flex h-[132px] w-[132px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
-                {upiUrl ? (
                   <Image
                     src="/httpier_scan_pay_qr.png"
                     alt={`Scan to pay ${formatInr(totals.balance)} to HTTPier`}
@@ -145,25 +146,20 @@ export function InvoiceDocument({ invoice, preview = false }: InvoiceDocumentPro
                     unoptimized
                     className="h-full w-full object-contain"
                   />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center rounded-lg border border-dashed border-[var(--color-line)] px-2 text-center text-[10px] leading-4 text-[var(--color-ink-soft)]">
-                    {totals.balance <= 0 ? "Paid in full" : "Add UPI ID in server settings"}
-                  </div>
-                )}
               </div>
-              <div className="min-w-0">
-                <p className="text-[11px] text-[var(--color-ink-soft)]">Amount to pay</p>
-                <p className="mt-1 text-xl font-semibold tracking-[-0.04em]">{formatInr(totals.balance)}</p>
+              )}
+              <div className="min-w-0 flex-1 basis-40">
+                {totals.balance <= 0 && <p className="mb-3 inline-flex rounded-full bg-blue-100 px-2.5 py-1 text-[10px] font-semibold text-blue-800">Paid in full</p>}
+                <p className="whitespace-nowrap text-[11px] text-[var(--color-ink-soft)]">Amount to pay</p>
+                <p className="mt-1 break-words text-xl font-semibold tracking-[-0.04em]">{formatInr(totals.balance)}</p>
+                <dl className="mt-3 space-y-2 text-[11px] leading-4">
                 {invoice.payment.upiId && (
-                  <p className="mt-2 break-all text-[11px] text-[var(--color-ink-soft)]">
-                    UPI: {invoice.payment.upiId}
-                  </p>
+                  <div><dt className="text-[var(--color-ink-soft)]">UPI ID</dt><dd className="mt-0.5 font-medium [overflow-wrap:anywhere]">{invoice.payment.upiId}</dd></div>
                 )}
                 {invoice.payment.mobile && (
-                  <p className="mt-1 text-[11px] text-[var(--color-ink-soft)]">
-                    Mobile: {invoice.payment.mobile}
-                  </p>
+                  <div><dt className="text-[var(--color-ink-soft)]">Mobile</dt><dd className="mt-0.5 font-medium [overflow-wrap:anywhere]">{invoice.payment.mobile}</dd></div>
                 )}
+                </dl>
               </div>
             </div>
           </div>
@@ -200,6 +196,8 @@ export function InvoiceDocument({ invoice, preview = false }: InvoiceDocumentPro
           </dl>
         </div>
       </section>
+
+      <InvoiceSupportSection support={invoice.support} />
 
       <footer className="border-t border-[var(--color-line)] px-5 py-5 text-center sm:px-8">
         <p className="font-medium">Thank you for choosing HTTPier.</p>

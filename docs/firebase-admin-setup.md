@@ -32,6 +32,13 @@ and write. No Firebase SDK, tokens, or private keys are sent to public pages.
 
 - `/login`: sign in with your Firebase account. Old shared-password sessions no
   longer grant access. There is no public account-registration flow.
+  Use the eye icon to show/hide the password. **Forgot password?** requests a
+  Firebase reset email only for `FIREBASE_ADMIN_EMAIL` (default:
+  `ahamedrinash@gmail.com`). No alternate recovery recipient is accepted. The
+  account must match `FIREBASE_ADMIN_UID` when configured and must not be disabled.
+  Firebase Authentication > Templates controls the reset email and hosted action
+  page. Reset requests use a best-effort per-worker 60-second cooldown in addition
+  to Firebase limits. The password changes only after completing the emailed link.
 - `/admin/clients`: searchable client list, status filters and INR summaries for
   the most recently updated 200 records.
 - `/admin/clients/new`: client/company/contact/address details, project status,

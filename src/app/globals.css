@@ -458,4 +458,99 @@ body {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
+
+  /* Let long invoices flow; do not push the entire support block to a new page. */
+  .invoice-sheet {
+    overflow: visible !important;
+  }
+
+  .invoice-support {
+    break-inside: auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .invoice-support-heading {
+    break-after: avoid;
+  }
+
+  .invoice-support ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 20px;
+  }
+
+  .invoice-support-benefit {
+    break-inside: avoid;
+  }
+
+  .invoice-service-row {
+    break-inside: avoid;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .invoice-service-row p {
+    line-height: 18px;
+  }
+
+  .invoice-sheet > div:nth-child(2) section > p:not(:first-child),
+  .invoice-sheet > div:nth-child(2) section > div {
+    margin-top: 6px;
+  }
+
+  .invoice-sheet > div:first-child {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .invoice-sheet > div:first-child > .pointer-events-none {
+    display: none !important;
+  }
+
+  .invoice-sheet > div:nth-child(2) > section,
+  .invoice-sheet > section:not(.invoice-support) {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .invoice-sheet footer {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .invoice-payment-summary {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 20px;
+    break-inside: avoid;
+    margin-top: 12px;
+    padding-top: 16px;
+  }
+
+  .invoice-payment-summary > div {
+    padding: 16px;
+  }
+
+  .invoice-payment-summary > div > div {
+    margin-top: 12px;
+  }
+
+  .invoice-payment-summary > dl {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .invoice-payment-summary > dl > div:not(:last-child) {
+    margin-block: 0 8px;
+  }
+
+  .invoice-support-disclaimer,
+  .invoice-sheet footer {
+    break-inside: avoid;
+  }
+
+  .invoice-support p {
+    orphans: 2;
+    widows: 2;
+  }
 }

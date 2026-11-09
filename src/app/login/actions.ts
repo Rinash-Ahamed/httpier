@@ -10,7 +10,33 @@ import { firebaseAuth, isAllowedAdmin, isFirebaseConfigured } from "@/lib/fireba
 
 export type LoginState = {
   error?: string;
+  success?: string;
 };
+
+// Best-effort per-worker cooldown; Firebase also applies its own email quotas.
+let nextPasswordResetAt = 0;
+
+export async function resetAdminPasswordAction(): Promise<LoginState> {
+  const apiKey = process.env.FIREBASE_WEB_API_KEY;
+  if (!apiKey || !isFirebaseConfigured()) return { error: "Password reset is not configured on the server yet." };
+  if (Date.now() < nextPasswordResetAt) return { error: "Please wait a minute before requesting another reset email." };
+  nextPasswordResetAt = Date.now() + 60_000;
+  try {
+    // Never accept a recipient from the browser or send to a different address.
+    const email = (process.env.FIREBASE_ADMIN_EMAIL || "ahamedrinash@gmail.com").trim().toLowerCase();
+    const account = await firebaseAuth().getUserByEmail(email);
+    if (!isAllowedAdmin(account) || account.disabled) return { error: "Unable to reset the admin password. Please check the admin account configuration." };
+    const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${encodeURIComponent(apiKey)}`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ requestType: "PASSWORD_RESET", email }),
+      cache: "no-store", signal: AbortSignal.timeout(12000),
+    });
+    if (!response.ok) return { error: "Unable to send the reset email. Please try again later or check Firebase Authentication settings." };
+    return { success: "Password reset requested. Check your admin email inbox and spam folder for the reset link." };
+  } catch {
+    return { error: "Unable to request a password reset. Please check Firebase configuration and try again shortly." };
+  }
+}
 
 export async function loginAction(
   _previousState: LoginState,

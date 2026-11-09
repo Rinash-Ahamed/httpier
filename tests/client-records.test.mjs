@@ -2,10 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import ts from "typescript";
+import { createRequire } from "node:module";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 
 function load(file, dependencies = {}) {
   const source = readFileSync(file, "utf8");
-  const result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } });
+  const result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } });
   const loaded = { exports: {} };
   new Function("require", "module", "exports", result.outputText)((id) => {
     if (!(id in dependencies)) throw new Error(`Unexpected dependency: ${id}`);
@@ -15,6 +18,22 @@ function load(file, dependencies = {}) {
 }
 
 const records = load("src/lib/client-records.ts");
+
+test("client cards show saved commission in INR without changing outstanding balances", () => {
+  const require = createRequire(import.meta.url);
+  const { ClientList } = load("src/components/admin/ClientList.tsx", {
+    "react/jsx-runtime": require("react/jsx-runtime"), react: { useState: () => ["", () => {}] },
+    "next/link": { default: ({ children, ...props }) => React.createElement("a", props, children) },
+    "@/lib/client-records": records,
+    "@/lib/invoice-types": { formatInr: (n) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n) },
+  });
+  const client = { id: "test", name: "Client", status: "Lead", agreedPaise: 1000000, commissionPaise: 50025, paidPaise: 200000, dueDate: "" };
+  const html = renderToStaticMarkup(React.createElement(ClientList, { clients: [client] }));
+  assert.match(html, /Commission<strong[^>]*>₹500\.25<\/strong>/);
+  assert.match(html, /Balance<strong[^>]*>₹8,000\.00<\/strong>/);
+  const legacy = { ...client }; delete legacy.commissionPaise;
+  assert.match(renderToStaticMarkup(React.createElement(ClientList, { clients: [legacy] })), /Commission<strong[^>]*>₹0\.00<\/strong>/);
+});
 
 test("client commission is stored in paise without changing fees or payments", async () => {
   let saved;

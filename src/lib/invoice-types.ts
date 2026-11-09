@@ -1,3 +1,5 @@
+import type { InvoiceSupport } from "@/lib/invoice-support";
+
 export type InvoiceItem = {
   id: string;
   serviceName: string;
@@ -21,6 +23,7 @@ export type InvoiceDraft = {
   discount: number;
   taxRate: number;
   amountPaid: number;
+  support?: InvoiceSupport;
 };
 
 export type InvoicePaymentDetails = {

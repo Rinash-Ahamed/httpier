@@ -3,6 +3,7 @@ import { InvoiceBuilder } from "@/components/admin/InvoiceBuilder";
 import type { InvoiceDraft } from "@/lib/invoice-types";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getPaymentDetails } from "@/lib/payment-config";
+import { createDefaultSupport } from "@/lib/invoice-support";
 
 export const metadata: Metadata = {
   title: "New invoice",
@@ -48,6 +49,7 @@ export default async function NewInvoicePage() {
     discount: 0,
     taxRate: 0,
     amountPaid: 0,
+    support: createDefaultSupport(),
   };
 
   return <InvoiceBuilder initialInvoice={initialInvoice} payment={getPaymentDetails()} />;

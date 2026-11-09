@@ -2,6 +2,8 @@
 
 import { useMemo, useState, type ChangeEvent } from "react";
 import { InvoiceDocument } from "@/components/invoice/InvoiceDocument";
+import { InvoiceSupportFields } from "@/components/admin/InvoiceSupportFields";
+import { validateInvoiceSupport } from "@/lib/invoice-support";
 import type {
   InvoiceDraft,
   InvoiceItem,
@@ -103,6 +105,8 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
 
   async function downloadImage() {
     if (isExporting) return;
+    const supportError = validateInvoiceSupport(draft.support);
+    if (supportError) { setNotice(supportError); return; }
     const invoice = document.getElementById("invoice-document");
     if (!invoice) return;
     setIsExporting(true);
@@ -156,7 +160,7 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => window.print()} className={actionButton} title="Choose Save as PDF in the print dialog">
+          <button type="button" onClick={() => { const error = validateInvoiceSupport(draft.support); if (error) setNotice(error); else window.print(); }} className={actionButton} title="Choose Save as PDF in the print dialog">
             Download PDF
           </button>
           <button
@@ -322,7 +326,8 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
               </div>
               <div>
                 <FieldLabel htmlFor="amountPaid">Advance Paid in INR</FieldLabel>
-                <input id="amountPaid" type="number" min="0" step="0.01" value={draft.amountPaid || ""} onChange={updateNumber("amountPaid")} className={inputClass} placeholder="0" />
+                <input id="amountPaid" type="number" inputMode="decimal" min="0" step="0.01" value={draft.amountPaid ?? 0} onChange={updateNumber("amountPaid")} className={inputClass} aria-describedby="advance-paid-help" />
+                <p id="advance-paid-help" className="mt-1 text-xs text-[var(--color-ink-soft)]">Enter 0 if no advance has been received.</p>
               </div>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl bg-[var(--color-ink)] p-4 text-white sm:grid-cols-4">
@@ -345,6 +350,9 @@ export function InvoiceBuilder({ initialInvoice, payment }: InvoiceBuilderProps)
             </div>
           </FormSection>
 
+          <FormSection eyebrow="05 - Support" title="Post-delivery benefits">
+            <InvoiceSupportFields support={draft.support} onChange={(support) => changeDraft({ support })} />
+          </FormSection>
         </div>
 
         <aside className="invoice-preview-panel min-w-0 xl:sticky xl:top-28">
