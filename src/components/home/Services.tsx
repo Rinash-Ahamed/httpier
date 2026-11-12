@@ -1,9 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
-import { Reveal, RevealGroup, revealItem } from "@/components/ui/Reveal";
 import { services } from "@/lib/data";
 
 const values = [
@@ -32,9 +28,8 @@ const capabilityImages: Record<(typeof services)[number]["slug"], string> = {
 
 function ServiceCard({ service }: { service: (typeof services)[number] }) {
   return (
-    <motion.a
+    <a
       href={`/services#${service.slug}`}
-      variants={revealItem}
       className="group relative min-w-0 overflow-hidden rounded-xl border border-white/10 bg-[#0b1628] p-4 transition-[transform,border-color,box-shadow] duration-500 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-1 hover:border-cyan-300/30 hover:shadow-[0_18px_46px_-28px_rgba(6,182,212,0.7)] sm:rounded-2xl sm:p-7"
     >
       <span
@@ -106,7 +101,7 @@ function ServiceCard({ service }: { service: (typeof services)[number] }) {
       <p className="relative mt-2 text-[11.5px] leading-relaxed text-slate-300 sm:text-[14.5px]">
         {service.short}
       </p>
-    </motion.a>
+    </a>
   );
 }
 
@@ -120,19 +115,19 @@ export function Services() {
       <div className="container-httpier">
         <div className="relative grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-end lg:gap-16">
           <div>
-            <Reveal>
+            <div>
               <p className="font-mono-tight text-[13px] uppercase tracking-widest text-cyan-300">
                 Who we are / What we do
               </p>
-            </Reveal>
-            <Reveal delay={0.06}>
+            </div>
+            <div>
               <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[3.5rem] lg:leading-[1.02]">
                 Design-led engineering for the better web.
               </h2>
-            </Reveal>
+            </div>
           </div>
 
-          <Reveal delay={0.12}>
+          <div>
             <div className="max-w-xl lg:justify-self-end">
               <p className="text-lg leading-relaxed text-slate-300">
                 HTTPier combines thoughtful design, modern engineering and performance to build digital experiences people enjoy using and businesses can grow with.
@@ -144,14 +139,13 @@ export function Services() {
                 More about HTTPier -&gt;
               </Link>
             </div>
-          </Reveal>
+          </div>
         </div>
 
-        <RevealGroup className="relative mt-10 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 shadow-[0_24px_80px_-44px_rgba(6,182,212,0.6)] sm:mt-12 sm:grid-cols-3">
+        <div className="relative mt-10 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 shadow-[0_24px_80px_-44px_rgba(6,182,212,0.6)] sm:mt-12 sm:grid-cols-3">
           {values.map((value) => (
-            <motion.div
+            <div
               key={value.title}
-              variants={revealItem}
               className="group bg-[#0b1628]/90 p-6 transition-colors duration-300 hover:bg-[#101f35] sm:p-7"
             >
               <div className="mb-5 h-px w-8 bg-[linear-gradient(90deg,var(--color-blue),var(--color-cyan))] transition-all duration-300 group-hover:w-14" />
@@ -161,12 +155,12 @@ export function Services() {
               <p className="mt-2 text-[14px] leading-relaxed text-slate-300">
                 {value.description}
               </p>
-            </motion.div>
+            </div>
           ))}
-        </RevealGroup>
+        </div>
 
         <div className="relative mt-12 flex flex-col gap-5 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">
-          <Reveal>
+          <div>
             <div>
               <p className="font-mono-tight text-[11px] uppercase tracking-[0.18em] text-cyan-300">
                 Capabilities
@@ -175,22 +169,22 @@ export function Services() {
                 Everything your digital presence needs.
               </h3>
             </div>
-          </Reveal>
-          <Reveal delay={0.08}>
+          </div>
+          <div>
             <Link
               href="/services"
               className="inline-flex items-center gap-1.5 text-[15px] font-medium text-cyan-300 hover:text-white hover:underline underline-offset-4"
             >
               View all services -&gt;
             </Link>
-          </Reveal>
+          </div>
         </div>
 
-        <RevealGroup className="relative mt-7 grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3">
+        <div className="relative mt-7 grid grid-cols-2 gap-2 sm:gap-4 lg:grid-cols-3">
           {services.map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}
-        </RevealGroup>
+        </div>
       </div>
     </section>
   );

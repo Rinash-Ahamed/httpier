@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { AmbientBackground } from "@/components/ui/AmbientBackground";
 import { HeroVisual } from "@/components/home/HeroVisual";
-import { Reveal } from "@/components/ui/Reveal";
 
 export function Hero() {
   return (
@@ -10,12 +9,12 @@ export function Hero() {
 
       <div className="container-httpier relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-8">
         <div className="min-w-0">
-          <Reveal>
+          <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-white/80 px-3.5 py-1.5 font-mono-tight text-[12px] text-[var(--color-ink-soft)] backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-cyan)]" />
               Better Web, By Design.
             </span>
-          </Reveal>
+          </div>
 
           <h1 className="mt-6 text-[clamp(2.55rem,11.5vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.03em] text-[var(--color-ink)]">
             <span className="line-mask">
@@ -29,14 +28,14 @@ export function Hero() {
             </span>
           </h1>
 
-          <Reveal delay={0.16}>
+          <div>
             <p className="mt-6 max-w-md text-[17px] leading-relaxed text-[var(--color-ink-soft)]">
               High-performance websites and digital products engineered for
               speed, clarity and growth.
             </p>
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.24}>
+          <div>
             <div className="mt-9 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-4">
               <Button href="/contact" className="w-full !px-3 text-[13px] sm:w-auto sm:!px-6 sm:text-[15px]">
                 <span className="sm:hidden">Start Project</span>
@@ -47,18 +46,18 @@ export function Hero() {
                 <span className="hidden sm:inline">Explore Our Work</span>
               </Button>
             </div>
-          </Reveal>
+          </div>
 
-          <Reveal delay={0.32}>
+          <div>
             <p className="mt-10 font-mono-tight text-[12.5px] tracking-wide text-[var(--color-ink-soft)]/70">
               Websites&nbsp;&middot;&nbsp;Web Apps&nbsp;&middot;&nbsp;SaaS&nbsp;&middot;&nbsp;E-commerce&nbsp;&middot;&nbsp;Digital Products
             </p>
-          </Reveal>
+          </div>
         </div>
 
-        <Reveal delay={0.2} y={28}>
+        <div>
           <HeroVisual />
-        </Reveal>
+        </div>
       </div>
     </section>
   );

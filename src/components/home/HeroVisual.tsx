@@ -114,7 +114,7 @@ export function HeroVisual() {
     if (!isVisible || !isPageVisible || shouldReduceMotion) return;
     const timer = window.setInterval(() => setPhase((current) => (current + 1) % steps.length), PHASE_DURATION_MS);
     return () => window.clearInterval(timer);
-  }, [isVisible, isPageVisible, phase, shouldReduceMotion]);
+  }, [isVisible, isPageVisible, shouldReduceMotion]);
 
   const visualStyle = { "--origin-accent": step.color, "--origin-soft": step.softColor } as CSSProperties;
 
